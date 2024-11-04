@@ -2,15 +2,23 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 def load_data(file_path):
-    """Loads the dataset from a CSV file.
+    """Loads the dataset from a CSV file and adds column names.
 
     Args:
         file_path (str): The path to the CSV file.
 
     Returns:
-        pandas.DataFrame: The loaded dataset.
+        pandas.DataFrame: The loaded dataset with named columns.
     """
-    data = pd.read_csv(file_path)
+    # Define column names
+    column_names = ['id', 'diagnosis'] + [f'feature{i:02d}' for i in range(1, 31)]
+    
+    # Load the data without header
+    data = pd.read_csv(file_path, header=None, names=column_names)
+    
+    print("Columnas en el conjunto de datos:")
+    print(data.columns)
+    
     return data
 
 def clean_data(data):
@@ -22,10 +30,12 @@ def clean_data(data):
     Returns:
         pandas.DataFrame: The cleaned dataset.
     """
-    # ... código para limpiar los datos ...
-    # For example:
-    # data.dropna(inplace=True)  # Remove rows with missing values
-    # data = data[data['column_name'] < 10]  # Remove outliers
+    # Remove rows with missing values
+    data.dropna(inplace=True)
+    
+    # Convert 'diagnosis' to numeric (0 for 'B', 1 for 'M')
+    data['diagnosis'] = (data['diagnosis'] == 'M').astype(int)
+    
     return data
 
 def normalize_numerical_features(data):
@@ -38,7 +48,7 @@ def normalize_numerical_features(data):
         pandas.DataFrame: The dataset with normalized numerical features.
     """
     scaler = StandardScaler()
-    numerical_features = ['feature1', 'feature2']  # List of numerical features
+    numerical_features = [col for col in data.columns if col.startswith('feature')]
     data[numerical_features] = scaler.fit_transform(data[numerical_features])
     return data
 
@@ -47,13 +57,18 @@ def normalize_numerical_features(data):
 
 if __name__ == "__main__":
     # Load the data
-    data = load_data('data/data.csv')   # Relative path to the CSV file
-
+    data = load_data('data/data.csv')
+    
+    print("\nInformación del dataset original:")
+    print(data.info())
+    
     # Preprocess the data
     data = clean_data(data)
     data = normalize_numerical_features(data)
-
-    # ... other preprocessing operations ...
-
+    
+    print("\nInformación del dataset procesado:")
+    print(data.info())
+    
     # Save the preprocessed data
-    data.to_csv('preprocessed_data.csv', index=False)
+    data.to_csv('data/preprocessed_data.csv', index=False)
+    print("\nDatos preprocesados guardados en 'data/preprocessed_data.csv'")
