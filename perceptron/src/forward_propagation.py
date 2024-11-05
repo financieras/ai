@@ -1,8 +1,9 @@
 # perceptron/src/forward_propagation.py
-# versión con TRES capas ocultas
+# versión con DOS capas ocultas
 
 import numpy as np
 import pandas as pd
+np.random.seed(0)
 
 def forward_propagation(X, weights, biases):
     """
@@ -19,14 +20,16 @@ def forward_propagation(X, weights, biases):
     
     # Número de capas en la red
     num_layers = len(weights)
-    
+    print("num_layers:", num_layers)    # imprime 3 para dos capas ocultas, ya que hay 3 conjuntos de pesos (2 ocultas + 1 de salida)
+
     # Inicializar la activación de la capa de entrada
     activation = X
     
     # Realizar la propagación hacia adelante capa por capa
     for l in range(num_layers):
         # Calcular la entrada ponderada (z)
-        z = np.dot(activation, weights[l].T) + biases[l]
+        #z = np.dot(activation, weights[l].T) + biases[l]
+        z = activation @ weights[l].T + biases[l]
         
         # Aplicar la función de activación (a)
         activation = sigmoid(z)
@@ -57,7 +60,7 @@ if __name__ == "__main__":
     # Definir la estructura de la red neuronal
     num_inputs = X.shape[1]
     num_outputs = 1
-    layer_sizes = [num_inputs, 10, 9, 8, num_outputs]  # Neuronas de las TRES capas ocultas
+    layer_sizes = [num_inputs, 32, 16, num_outputs]  # Neuronas de las DOS capas ocultas
 
     # Inicializar aleatoriamente los pesos y sesgos
     weights = [np.random.randn(layer_sizes[i+1], layer_sizes[i]) for i in range(len(layer_sizes)-1)]
