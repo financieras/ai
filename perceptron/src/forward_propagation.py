@@ -1,5 +1,5 @@
 # perceptron/src/forward_propagation.py
-# versión con una única capa oculta
+# versión con TRES capas ocultas
 
 import numpy as np
 import pandas as pd
@@ -32,9 +32,7 @@ def forward_propagation(X, weights, biases):
         activation = sigmoid(z)
     
     # La salida de la red neuronal es la activación de la última capa
-    output = activation
-    
-    return output
+    return activation
 
 def sigmoid(z):
     """
@@ -58,18 +56,16 @@ if __name__ == "__main__":
     
     # Definir la estructura de la red neuronal
     num_inputs = X.shape[1]
-    num_hidden = 10
     num_outputs = 1
+    layer_sizes = [num_inputs, 10, 9, 8, num_outputs]  # Neuronas de las TRES capas ocultas
 
     # Inicializar aleatoriamente los pesos y sesgos
-    W1 = np.random.randn(num_hidden, num_inputs)
-    b1 = np.random.randn(1, num_hidden)  # (1, 10)
-    W2 = np.random.randn(num_outputs, num_hidden)
-    b2 = np.random.randn(1, num_outputs)  # (1, 1)
-
-    weights = [W1, W2]
-    biases = [b1, b2]
+    weights = [np.random.randn(layer_sizes[i+1], layer_sizes[i]) for i in range(len(layer_sizes)-1)]
+    biases = [np.random.randn(1, layer_sizes[i+1]) for i in range(len(layer_sizes)-1)]
 
     # Realizar la propagación hacia adelante
     predictions = forward_propagation(X, weights, biases)
-    print("Predicciones:", predictions)
+
+    print("Forma de X:", X.shape)
+    print("Forma de las predicciones:", predictions.shape)
+    print("Primeras 5 predicciones:", predictions[:5])
