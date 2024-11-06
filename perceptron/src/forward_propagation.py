@@ -3,7 +3,7 @@
 
 import numpy as np
 import pandas as pd
-np.random.seed(0)
+np.random.seed(0)       # OJO La semilla se fija para hacer prueba, en producción quirar el número
 
 def forward_propagation(X, weights, biases):
     """
@@ -49,7 +49,7 @@ def sigmoid(z):
     """
     return 1 / (1 + np.exp(-z))
 
-if __name__ == "__main__":
+def main():
     # Cargar los datos preprocesados
     data = pd.read_csv('data/preprocessed_data.csv')
     
@@ -72,3 +72,6 @@ if __name__ == "__main__":
     print("Forma de X:", X.shape)
     print("Forma de las predicciones:", predictions.shape)
     print("Primeras 5 predicciones:", predictions[:5])
+
+if __name__ == "__main__":
+    main()

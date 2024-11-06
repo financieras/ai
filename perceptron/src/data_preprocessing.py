@@ -52,10 +52,7 @@ def normalize_numerical_features(data):
     data[numerical_features] = scaler.fit_transform(data[numerical_features])
     return data
 
-# ... other functions? ...
-
-
-if __name__ == "__main__":
+def main():
     # Load the data
     data = load_data('data/data.csv')
     
@@ -72,3 +69,6 @@ if __name__ == "__main__":
     # Save the preprocessed data
     data.to_csv('data/preprocessed_data.csv', index=False)
     print("\nDatos preprocesados guardados en 'data/preprocessed_data.csv'")
+
+if __name__ == "__main__":
+    main()
