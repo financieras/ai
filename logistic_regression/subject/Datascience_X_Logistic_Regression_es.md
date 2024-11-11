@@ -1,23 +1,26 @@
-# Harry Potter y un Científico de Datos Resumen: ¡Escribe un clasificador y salva Hogwarts! Versión: 2
+# Regresión logística de ciencia de datos
+## Harry Potter y un Científico de Datos
+- Resumen: ¡Escribe un clasificador y salva Hogwarts!
+- Versión: 2
 
 ## Contenidos
 
-I Prólogo 2
-II Introducción 3
-III Objetivos 4
-IV Instrucciones generales 5
-V Parte obligatoria 6
-V.1 Análisis de datos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-V.2 Visualización de datos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-V.2.1 Histograma . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-V.2.2 Gráfico de dispersión . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-V.2.3 Gráfico de pares . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-V.3 Regresión Logística . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
-VI Parte Bonus 9
-VII Entrega y evaluación entre pares 10
-VIII Anexos 11
-VIII.1 Matemáticas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
-VIII.2 Ejemplos de visualización de datos . . . . . . . . . . . . . . . . . . . . . . . 12
+1. Prólogo
+2. Introducción
+3. Objetivos
+4. Instrucciones generales
+5. Parte obligatoria
+   - 5.1. Análisis de datos
+   - 5.2. Visualización de datos
+     - 5.2.1. Histograma
+     - 5.2.2. Gráfico de dispersión
+     - 5.2.3. Gráfico de pares
+   - 5.3 Regresión Logística
+6. Parte Bonus
+7. Entrega y evaluación entre pares
+8. Anexos
+   - 8.1. Matemáticas
+   - 8.2. Ejemplos de visualización de datos
 
 ## Capítulo I Prólogo
 
@@ -45,15 +48,15 @@ Le explicas que para que tus herramientas "muggle" funcionen, necesitas datos de
 
 En este proyecto DataScience x Regresión Logística, continuarás tu exploración del Aprendizaje Automático descubriendo diferentes herramientas. El uso del término DataScience en el título será claramente considerado por algunos como abusivo. Eso es cierto. No pretendemos darte todas las bases de la Ciencia de Datos en este tema. El tema es vasto. Solo veremos aquí algunas bases que nos parecieron útiles para la exploración de datos antes de enviarlos al algoritmo de aprendizaje automático.
 
-Implementarás un modelo de clasificación lineal, como continuación del tema de regresión lineal: una regresión logística. También te alentamos mucho a crear un conjunto de herramientas de aprendizaje automático mientras avanzas en la rama.
+Implementarás un **modelo de clasificación lineal**, como continuación del tema de regresión lineal: una **regresión logística**. También te alentamos mucho a crear un conjunto de **herramientas de aprendizaje automático** mientras avanzas en la rama.
 
 Resumiendo:
-• Aprenderás a leer un conjunto de datos, visualizarlo de diferentes maneras, seleccionar y limpiar información innecesaria de tus datos.
-• Entrenarás una regresión logística que resolverá un problema de clasificación.
+  - Aprenderás a leer un conjunto de datos, visualizarlo de diferentes maneras, seleccionar y limpiar información innecesaria de tus datos.
+  - Entrenarás una regresión logística que resolverá un problema de clasificación.
 
 ## Capítulo IV Instrucciones generales
 
-Puedes usar el lenguaje que quieras. Sin embargo, te recomendamos que elijas un lenguaje con una biblioteca que facilite el trazado y el cálculo de propiedades estadísticas de un conjunto de datos. Cualquier función que haga todo el trabajo pesado por ti (por ejemplo, usar la función describe de la biblioteca Pandas) se considerará trampa.
+Puedes usar el lenguaje que quieras. Sin embargo, te recomendamos que elijas un lenguaje con una biblioteca que facilite el trazado y el cálculo de propiedades estadísticas de un conjunto de datos. Cualquier función que haga todo el trabajo pesado por ti (por ejemplo, usar la función `describe` de la biblioteca `Pandas`) se considerará trampa.
 
 ## Capítulo V Parte obligatoria
 
