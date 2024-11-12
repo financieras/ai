@@ -1,4 +1,4 @@
-# Regresión logística de ciencia de datos
+# Regresión logística en ciencia de datos
 ## Harry Potter y un Científico de Datos
 - Resumen: ¡Escribe un clasificador y salva Hogwarts!
 - Versión: 2
@@ -68,11 +68,11 @@ Veremos algunos pasos básicos de exploración de datos. Por supuesto, estas no 
 
 En primer lugar, echa un vistazo a los datos disponibles. Mira en qué formato se presentan, si hay varios tipos de datos, los diferentes rangos, etc. Es importante hacerse una idea de tu materia prima antes de comenzar. Cuanto más trabajes con datos, más desarrollarás una intuición sobre cómo podrás usarlos.
 
-En esta parte, la Profesora McGonagall te pide que produzcas un programa llamado describe.[extensión]. Este programa tomará un conjunto de datos como parámetro. Todo lo que tiene que hacer es mostrar información para todas las características numéricas como en el ejemplo:
+En esta parte, la Profesora McGonagall te pide que produzcas un programa llamado `describe.[extension]`. Este programa tomará un conjunto de datos como parámetro. Todo lo que tiene que hacer es mostrar información para todas las características numéricas como en el ejemplo:
 
-```
+```bash
 $> describe.[extensión] dataset_train.csv
-       Característica 1 Característica 2 Característica 3 Característica 4
+        Feature_01     Feature_02      Feature_03      Feature_04
 Count   149.000000     149.000000      149.000000      149.000000
 Mean      5.848322       3.051007        3.774497        1.205369
 Std       5.906338       3.081445        4.162021        1.424286
@@ -83,7 +83,7 @@ Min       4.300000       2.000000        1.000000        0.100000
 Max       7.900000       4.400000        6.900000        2.500000
 ```
 
-Está prohibido usar cualquier función que haga el trabajo por ti como: count, mean, std, min, max, percentile, etc... sin importar el lenguaje que uses. Por supuesto, también está prohibido usar la biblioteca describe o cualquier función que se parezca (más o menos) a ella de otra biblioteca.
+> Está prohibido usar cualquier función que haga el trabajo por ti como: `count`, `mean`, `std`, `min`, `max`, `percentile`, etc... sin importar el lenguaje que uses. Por supuesto, también está prohibido usar la biblioteca `describe` o cualquier función que se parezca (más o menos) a ella de otra biblioteca.
 
 ### V.2 Visualización de datos
 
@@ -93,17 +93,17 @@ En esta sección, se te pide que crees un conjunto de scripts, cada uno utilizan
 
 #### V.2.1 Histograma
 
-Haz un script llamado histogram.[extensión] que muestre un histograma respondiendo a la siguiente pregunta:
+Haz un script llamado `histogram.[extension]` que muestre un histograma respondiendo a la siguiente pregunta:
 ¿Qué curso de Hogwarts tiene una distribución de puntajes homogénea entre las cuatro casas?
 
 #### V.2.2 Gráfico de dispersión
 
-Haz un script llamado scatter_plot.[extensión] que muestre un gráfico de dispersión respondiendo a la siguiente pregunta:
+Haz un script llamado `scatter_plot.[extension]` que muestre un gráfico de dispersión respondiendo a la siguiente pregunta:
 ¿Cuáles son las dos características que son similares?
 
 #### V.2.3 Gráfico de pares
 
-Haz un script llamado pair_plot.[extensión] que muestre un gráfico de pares o una matriz de gráficos de dispersión (según la biblioteca que estés usando).
+Haz un script llamado `pair_plot.[extension]` que muestre un gráfico de pares o una matriz de gráficos de dispersión (según la biblioteca que estés usando).
 A partir de esta visualización, ¿qué características vas a usar para tu regresión logística?
 
 ### V.3 Regresión Logística
@@ -112,13 +112,13 @@ Llegas a la última parte: codifica tu Sombrero Mágico. Para hacer esto, tienes
 
 Tendrás que hacer dos programas:
 
-• El primero entrenará tus modelos, se llama logreg_train.[extensión]. Toma como parámetro dataset_train.csv. Para la parte obligatoria, debes usar la técnica de descenso de gradiente para minimizar el error. El programa genera un archivo que contiene los pesos que se utilizarán para la predicción.
+• El primero entrenará tus modelos, se llama `logreg_train.[extension]`. Toma como parámetro `dataset_train.csv`. Para la parte obligatoria, debes usar la técnica de descenso de gradiente para minimizar el error. El programa genera un archivo que contiene los pesos que se utilizarán para la predicción.
 
-• Un segundo debe llamarse logreg_predict.[extensión]. Toma como parámetro dataset_test.csv y un archivo que contiene los pesos entrenados por el programa anterior.
+• El segundo debe llamarse `logreg_predict.[extension]`. Toma como parámetro `dataset_test.csv` y un archivo que contiene los pesos entrenados por el programa anterior.
 
-Para evaluar el rendimiento de tu clasificador, este segundo programa tendrá que generar un archivo de predicción houses.csv formateado exactamente de la siguiente manera:
+Para evaluar el rendimiento de tu clasificador, este segundo programa tendrá que generar un archivo de predicción `houses.csv` formateado exactamente de la siguiente manera:
 
-```
+```bash
 $> cat houses.csv
 Index,Hogwarts House
 0,Gryffindor
@@ -135,11 +135,11 @@ Index,Hogwarts House
 
 Es posible hacer muchos bonos interesantes para este tema. Aquí hay algunas sugerencias:
 
-• Agregar más campos para describe.[extensión]
-• Implementar un descenso de gradiente estocástico
+• Agregar más campos para `describe.[extension]`
+• Implementar un *descenso de gradiente estocástico*
 • Implementar otros algoritmos de optimización (GD por lotes/GD mini-lotes/como lo llames)
 
-La parte de bonificación solo se evaluará si la parte obligatoria es PERFECTA. Perfecto significa que la parte obligatoria se ha realizado íntegramente y funciona sin fallos. Si no has pasado TODOS los requisitos obligatorios, tu parte de bonificación no se evaluará en absoluto.
+> La parte de bonificación solo se evaluará si la parte obligatoria es PERFECTA. Perfecto significa que la parte obligatoria se ha realizado íntegramente y funciona sin fallos. Si no has pasado TODOS los requisitos obligatorios, tu parte de bonificación no se evaluará en absoluto.
 
 ## Capítulo VII Entrega y evaluación entre pares
 
@@ -147,9 +147,9 @@ Entrega tu tarea en tu repositorio Git como de costumbre. Solo el trabajo dentro
 
 Durante la corrección, serás evaluado en tu entrega (sin funciones que hagan todo el trabajo pesado por ti), así como en tu capacidad para presentar, explicar y justificar tus elecciones.
 
-Tu clasificador será evaluado con los datos presentes en dataset_test.csv. Tus respuestas serán evaluadas utilizando la puntuación de precisión de la biblioteca Scikit-Learn.
+Tu clasificador será evaluado con los datos presentes en `dataset_test.csv`. Tus respuestas serán evaluadas utilizando la [puntuación de precisión](https://scikit-learn.org/stable/modules/model_evaluation.html#accuracy-score) de la biblioteca `Scikit-Learn`.
 
-La Profesora McGonagall está de acuerdo en que tu algoritmo es comparable al Sombrero Seleccionador solo si tiene una precisión mínima del 98%.
+La Profesora McGonagall está de acuerdo en que tu algoritmo es comparable al Sombrero Seleccionador solo si tiene una precisión mínima del **98%**.
 
 También será importante poder explicar el funcionamiento de los algoritmos de aprendizaje automático utilizados.
 
@@ -159,24 +159,29 @@ También será importante poder explicar el funcionamiento de los algoritmos de 
 
 La regresión logística funciona casi como la regresión lineal. Aquí hay una función de costo (pérdida):
 
-\[J(\theta) = -\frac{1}{m} \sum_{i=1}^m [y_i \log(h_\theta(x_i)) + (1-y_i) \log(1-h_\theta(x_i))]\]
+$$J(\theta) = -\frac{1}{m} \sum_{i=1}^m [y_i \log(h_\theta(x_i)) + (1-y_i) \log(1-h_\theta(x_i))]$$
 
-Donde \(h_\theta(x)\) se define de la siguiente manera:
+Donde $h_\theta(x)$ se define de la siguiente manera:
 
-\[h_\theta(x) = g(\theta^T x)\]
+$$h_\theta(x) = g(\theta^T x)$$
 
 Con:
 
-\[g(z) = \frac{1}{1 + e^{-z}}\]
+$$g(z) = \frac{1}{1 + e^{-z}}$$
 
 La función de pérdida nos da la siguiente derivada parcial:
 
-\[\frac{\partial}{\partial \theta_j} J(\theta) = \frac{1}{m} \sum_{i=1}^m (h_\theta(x_i) - y_i)x_i^j\]
+$$\frac{\partial}{\partial \theta_j} J(\theta) = \frac{1}{m} \sum_{i=1}^m (h_\theta(x_i) - y_i)x_i^j$$
 
 ### VIII.2 Ejemplos de visualización de datos
 
 Aquí hay algunos ejemplos de visualización de datos:
 
 • Histograma
+<img src="https://github.com/financieras/ai/blob/main/logistic_regresion/subject/histogram.png?raw=1" alt="histogram" width="600"/>
+
 • Gráfico de dispersión
+<img src="https://github.com/financieras/ai/blob/main/logistic_regresion/subject/scratter_plot.png?raw=1" alt="scratter_plot" width="600"/>
+
 • Gráfico de pares
+<img src="https://github.com/financieras/ai/blob/main/logistic_regresion/subject/pair_plot.png?raw=1" alt="pair_plot" width="600"/>
