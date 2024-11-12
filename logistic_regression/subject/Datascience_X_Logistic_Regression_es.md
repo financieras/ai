@@ -178,10 +178,13 @@ $$\frac{\partial}{\partial \theta_j} J(\theta) = \frac{1}{m} \sum_{i=1}^m (h_\th
 Aquí hay algunos ejemplos de visualización de datos:
 
 • Histograma
-<img src="https://github.com/financieras/ai/blob/main/logistic_regresion/subject/histogram.png?raw=1" alt="histogram" width="600"/>
+
+<img src="https://github.com/financieras/ai/blob/main/logistic_regression/subject/histogram.png?raw=1" alt="histogram" width="400"/>
 
 • Gráfico de dispersión
-<img src="https://github.com/financieras/ai/blob/main/logistic_regresion/subject/scratter_plot.png?raw=1" alt="scratter_plot" width="600"/>
+
+<img src="https://github.com/financieras/ai/blob/main/logistic_regression/subject/scratter_plot.png?raw=1" alt="scratter_plot" width="400"/>
 
 • Gráfico de pares
-<img src="https://github.com/financieras/ai/blob/main/logistic_regresion/subject/pair_plot.png?raw=1" alt="pair_plot" width="600"/>
+
+<img src="https://github.com/financieras/ai/blob/main/logistic_regression/subject/pair_plot.png?raw=1" alt="pair_plot" width="600"/>
