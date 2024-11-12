@@ -71,7 +71,7 @@ En primer lugar, echa un vistazo a los datos disponibles. Mira en qué formato s
 En esta parte, la Profesora McGonagall te pide que produzcas un programa llamado `describe.[extension]`. Este programa tomará un conjunto de datos como parámetro. Todo lo que tiene que hacer es mostrar información para todas las características numéricas como en el ejemplo:
 
 ```bash
-$> describe.[extensión] dataset_train.csv
+$> describe.[extension] dataset_train.csv
         Feature_01     Feature_02      Feature_03      Feature_04
 Count   149.000000     149.000000      149.000000      149.000000
 Mean      5.848322       3.051007        3.774497        1.205369

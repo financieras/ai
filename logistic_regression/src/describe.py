@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sys
+from tabulate import tabulate
 
 def load_data(file_path):
     """Carga el dataset desde el archivo CSV."""
@@ -13,40 +14,52 @@ def get_sample(df, sample_size=None):
     return df.sample(n=sample_size, random_state=42)
 
 def calculate_metrics(df):
-    """Calcula métricas para las columnas numéricas del dataframe."""
-    numeric_columns = df.select_dtypes(include=[np.number]).columns
+    """Calcula métricas para las 13 últimas columnas numéricas del dataframe."""
+    numeric_columns = df.select_dtypes(include=[np.number]).columns[-13:]
     metrics = {}
     
     for col in numeric_columns:
         metrics[col] = {
-            "media": df[col].mean(),
-            "mediana": df[col].median(),
-            "desviacion_estandar": df[col].std(),
-            "minimo": df[col].min(),
-            "maximo": df[col].max(),
-            "percentil_25": df[col].quantile(0.25),
-            "percentil_75": df[col].quantile(0.75)
+            "Count": df[col].count(),
+            "Mean": df[col].mean(),
+            "Std": df[col].std(),
+            "Min": df[col].min(),
+            "25%": df[col].quantile(0.25),
+            "50%": df[col].median(),
+            "75%": df[col].quantile(0.75),
+            "Max": df[col].max()
         }
     
     return metrics
 
-def print_metrics(metrics):
-    """Imprime las métricas calculadas."""
-    for col, col_metrics in metrics.items():
-        print(f"\nMétricas para {col}:")
-        for metric, value in col_metrics.items():
-            print(f"  {metric}: {value:.2f}")
+def print_metrics_table(metrics):
+    """Imprime las métricas calculadas en formato de tabla."""
+    table_data = []
+    headers = [""] + list(metrics.keys())
+    
+    for metric in ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]:
+        row = [metric]
+        for col in metrics:
+            value = metrics[col][metric]
+            row.append(f"{value:.6f}" if isinstance(value, float) else f"{value}")
+        table_data.append(row)
+    
+    print(tabulate(table_data, headers=headers, tablefmt="simple"))
 
 def main():
-    file_path = "../datasets/dataset_train.csv"
+    if len(sys.argv) < 2:
+        print("Uso: python description.py <archivo_csv> [tamaño_muestra]")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
     
     # Verifica si se proporcionó un argumento para el tamaño de la muestra
     sample_size = None
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 2:
         try:
-            sample_size = int(sys.argv[1])
+            sample_size = int(sys.argv[2])
         except ValueError:
-            print("El argumento debe ser un número entero.")
+            print("El tamaño de la muestra debe ser un número entero.")
             sys.exit(1)
     
     # Carga los datos
@@ -58,9 +71,8 @@ def main():
     # Calcula las métricas
     metrics = calculate_metrics(sample_df)
     
-    # Imprime las métricas
-    print(f"Métricas calculadas para {'una muestra de ' + str(sample_size) if sample_size else 'todo el conjunto de datos'}:")
-    print_metrics(metrics)
+    # Imprime las métricas en formato de tabla
+    print_metrics_table(metrics)
 
 if __name__ == "__main__":
     main()
