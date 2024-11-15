@@ -1,20 +1,20 @@
 import pandas as pd
 import numpy as np
-import sys
 from tabulate import tabulate
+import sys
 
 def load_data(file_path):
-    """Carga el dataset desde el archivo CSV."""
+    """Load the dataset from the CSV file."""
     return pd.read_csv(file_path)
 
 def get_sample(df, sample_size=None):
-    """Obtiene una muestra aleatoria del dataframe o el dataframe completo."""
+    """Get a random sample of the dataframe or the full dataframe."""
     if sample_size is None or sample_size >= len(df):
         return df
     return df.sample(n=sample_size, random_state=42)
 
 def calculate_metrics(df):
-    """Calcula métricas para las 13 últimas columnas numéricas del dataframe."""
+    """Calculate metrics for the last 13 numeric columns in the dataframe."""
     numeric_columns = df.select_dtypes(include=[np.number]).columns[-13:]
     metrics = {}
     
@@ -33,7 +33,7 @@ def calculate_metrics(df):
     return metrics
 
 def print_metrics_table(metrics):
-    """Imprime las métricas calculadas en formato de tabla."""
+    """Print the calculated metrics in a table format."""
     table_data = []
     headers = [""] + list(metrics.keys())
     
@@ -46,33 +46,18 @@ def print_metrics_table(metrics):
     
     print(tabulate(table_data, headers=headers, tablefmt="simple"))
 
-def main():
-    if len(sys.argv) < 2:
-        print("Uso: python description.py <archivo_csv> [tamaño_muestra]")
-        sys.exit(1)
-    
-    file_path = sys.argv[1]
-    
-    # Verifica si se proporcionó un argumento para el tamaño de la muestra
-    sample_size = None
-    if len(sys.argv) > 2:
-        try:
-            sample_size = int(sys.argv[2])
-        except ValueError:
-            print("El tamaño de la muestra debe ser un número entero.")
-            sys.exit(1)
-    
-    # Carga los datos
+def analyze_dataset(file_path='../datasets/preprocessed_data.csv', sample_size=None):
+    """Analyze the dataset and print the metrics table."""
     df = load_data(file_path)
-    
-    # Obtiene la muestra o el conjunto completo
     sample_df = get_sample(df, sample_size)
-    
-    # Calcula las métricas
     metrics = calculate_metrics(sample_df)
-    
-    # Imprime las métricas en formato de tabla
     print_metrics_table(metrics)
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) < 2:
+        print("Usage: python describe.py <csv_file> [sample_size]")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    sample_size = int(sys.argv[2]) if len(sys.argv) > 2 else None
+    analyze_dataset(file_path, sample_size)

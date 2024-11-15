@@ -1,38 +1,39 @@
 import numpy as np
 import pandas as pd
-import os               # para manejar rutas de archivos
+import os
 
-# Definir las rutas de los archivos
-input_file = '../datasets/dataset_train.csv'
-output_file = '../datasets/preprocessed_data.csv'
+def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../datasets/preprocessed_data.csv'):
+    """
+    Preprocess the input dataset and save the result to a new file.
 
-# Asegurarse de que la ruta de salida existe
-os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    Parameters:
+    input_file (str): Path to the input CSV file.
+    output_file (str): Path to save the preprocessed CSV file.
+    """
+    # Ensure the output directory exists
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-# Leer el CSV
-df = pd.read_csv(input_file)
+    # Read the CSV file
+    df = pd.read_csv(input_file)
 
-# Eliminar filas con datos faltantes
-df = df.dropna()
+    # Drop rows with missing data
+    df = df.dropna()
 
-# Renombrar columnas reemplazando espacios por guiones bajos
-df.columns = df.columns.str.replace(' ', '_')
+    # Rename columns, replacing spaces with underscores
+    df.columns = df.columns.str.replace(' ', '_')
 
-# Redondear 'Divination' y 'Charms' a 12 decimales
-df['Divination'] = df['Divination'].round(12)
-df['Charms'] = df['Charms'].round(12)
+    # Round 'Divination' and 'Charms' to 12 decimal places
+    df['Divination'] = df['Divination'].round(12)
+    df['Charms'] = df['Charms'].round(12)
 
-# Resetear el índice para que sea continuo
-# Crear un array de números correlativos
-index_values = np.arange(len(df))
+    # Reset the index to a continuous sequence
+    sequential_index = np.arange(len(df))
+    df['Index'] = sequential_index
 
-# Asignar el array a la columna "Index"
-df['Index'] = index_values
+    # Convert 'Best_Hand' to a binary variable
+    df['Best_Hand'] = df['Best_Hand'].map({'Left': 0, 'Right': 1})
 
-# Convertir 'Best_Hand' a variable binaria
-df['Best_Hand'] = df['Best_Hand'].map({'Left': 0, 'Right': 1})
+    # Save the preprocessed DataFrame to a new CSV file
+    df.to_csv(output_file, index=False)
 
-# Guardar el DataFrame procesado en un nuevo archivo CSV
-df.to_csv(output_file, index=False)
-
-print(f"Preprocesamiento completado. Archivo guardado en: {output_file}")
+    print(f"Preprocessing completed. Output saved to: {output_file}")
