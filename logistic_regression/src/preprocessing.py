@@ -18,6 +18,10 @@ df = df.dropna()
 # Renombrar columnas reemplazando espacios por guiones bajos
 df.columns = df.columns.str.replace(' ', '_')
 
+# Redondear 'Divination' y 'Charms' a 12 decimales
+df['Divination'] = df['Divination'].round(12)
+df['Charms'] = df['Charms'].round(12)
+
 # Resetear el índice para que sea continuo
 # Crear un array de números correlativos
 index_values = np.arange(len(df))
