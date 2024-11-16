@@ -10,19 +10,20 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def show_menu():
-    text_menu = f"{c.PURPLE}" + \
+    text_menu = f"""
+    {c.PURPLE}===========   M E N U   ===========
+    {c.CYAN}1.{c.BLUE} Preprocesing data
+    {c.CYAN}2.{c.BLUE} Remove highly correlated columns
+    {c.CYAN}3.{c.BLUE} Describe dataset (max, min, ...)
+    {c.CYAN}4.{c.BLUE} Normalize dataset
+    {c.YELLOW}\t   ----  BONUS  ----
+    {c.CYAN}5.{c.BLUE} Opción 5
+    {c.CYAN}6.{c.BLUE} Opción 6
+    {c.CYAN}7.{c.BLUE} Opción 7
+    {c.CYAN}0. Exit
+    {c.PURPLE}{'='*36}{c.RESET}
     """
-    ============   M E N U   ============
-    1. Preprocesing data
-    2. Remove highly correlated columns
-    3. Describe dataset (max, min, ...)
-    4. Normalize dataset
-    0. Exit
-    =====================================
-    """ + \
-    f"{c.RESET}"
     print(text_menu)
-
 
 
 if __name__ == "__main__":
