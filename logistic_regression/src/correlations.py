@@ -38,8 +38,8 @@ def remove_highly_correlated_columns(input_file='../datasets/preprocessed_data.c
 
     # Drop the identified columns
     if columns_to_remove:
-        print(f"Removing the following columns: {', '.join(columns_to_remove)}")
-        df = df.drop(columns=columns_to_remove)
+        print(f"Proposed Columns to remove: {', '.join(columns_to_remove)}")
+        #df = df.drop(columns=columns_to_remove)
     else:
         print("No columns found to remove.")
 
