@@ -19,16 +19,15 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     # Drop rows with missing data
     df = df.dropna()
 
+    # Reset the index to a continuous sequence
+    sequential_index = np.arange(len(df))
+    df['Index'] = sequential_index
     # Rename columns, replacing spaces with underscores
     df.columns = df.columns.str.replace(' ', '_')
 
     # Round 'Divination' and 'Charms' to 12 decimal places
     df['Divination'] = df['Divination'].round(12)
     df['Charms'] = df['Charms'].round(12)
-
-    # Reset the index to a continuous sequence
-    sequential_index = np.arange(len(df))
-    df['Index'] = sequential_index
 
     # Convert 'Best_Hand' to a binary variable
     df['Best_Hand'] = df['Best_Hand'].map({'Left': 0, 'Right': 1})
