@@ -14,8 +14,10 @@ def get_sample(df, sample_size=None):
     return df.sample(n=sample_size, random_state=42)
 
 def calculate_metrics(df):
-    """Calculate metrics for the last 13 numeric columns in the dataframe."""
-    numeric_columns = df.select_dtypes(include=[np.number]).columns[-13:]
+    """Calculate metrics for float columns in the dataframe."""
+    # Select numeric columns (float64)
+    numeric_columns = df.select_dtypes(include=['float64']).columns
+
     metrics = {}
     
     for col in numeric_columns:

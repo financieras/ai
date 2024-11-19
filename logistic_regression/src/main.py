@@ -15,7 +15,7 @@ def show_menu():
     text_menu = f"""
     {c.PURPLE}===========   M E N U   ===========
     {c.CYAN}1.{c.BLUE} Preprocesing data
-    {c.CYAN}2.{c.BLUE} Remove highly correlated columns
+    {c.CYAN}2.{c.BLUE} Detect highly correlated columns
     {c.CYAN}3.{c.BLUE} Describe dataset (max, min, ...)
     {c.CYAN}4.{c.BLUE} Normalize dataset
     {c.YELLOW}\t   ----  BONUS  ----
@@ -36,8 +36,8 @@ def execute_option(choice):
         print(f"{c.CYAN}=== Preprocessing Data ==={c.RESET}\n")
         preprocessing.preprocess_data()
     elif choice == 2:
-        print(f"{c.CYAN}=== Removing Highly Correlated Columns ==={c.RESET}\n")
-        correlations.remove_highly_correlated_columns()
+        print(f"{c.CYAN}=== Detecting Highly Correlated Columns ==={c.RESET}\n")
+        correlations.detect_highly_correlated_columns()
     elif choice == 3:
         print(f"{c.CYAN}=== Analyzing Dataset ==={c.RESET}\n")
         describe.analyze_dataset()

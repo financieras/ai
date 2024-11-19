@@ -1,48 +1,61 @@
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 import numpy as np
-from scipy import stats
-import os
 
-def remove_highly_correlated_columns(input_file='../datasets/preprocessed_data.csv', output_file='../datasets/preprocessed_data.csv'):
+def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.csv"):
     """
-    Removes columns with high correlation from the input dataset and saves the result.
+    Detect and visualize highly correlated columns in a dataset.
 
-    Parameters:
-    input_file (str): Path to the input CSV file.
-    output_file (str): Path to save the processed CSV file.
+    This function loads a CSV file, calculates correlations between numeric columns,
+    creates a heatmap, and identifies highly correlated pairs of columns.
+
+    Args:
+    input_file (str): Path to the input CSV file. Default is "../datasets/preprocessed_data.csv".
+
+    Returns:
+    None. Outputs are saved as files and printed to console.
     """
-    # Read the CSV file
-    df = pd.read_csv(input_file)
 
-    # Get the last 13 columns
-    last_13_columns = df.columns[-13:]
+    # Load the dataset
+    df = pd.read_csv(input_file, index_col=0)
 
-    # Function to calculate R²
-    def calculate_r_squared(x, y):
-        slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
-        return r_value**2
+    # Select numeric columns (float64, int64, and bool)
+    numeric_columns = df.select_dtypes(include=['float64', 'int64', 'bool']).columns
 
-    # List to store columns to remove
-    columns_to_remove = set()
+    # Calculate the correlation matrix
+    correlation_matrix = df[numeric_columns].corr()
 
-    # Calculate R² for each pair of columns
-    for i in range(len(last_13_columns)):
-        for j in range(i+1, len(last_13_columns)):
-            col1 = last_13_columns[i]
-            col2 = last_13_columns[j]
-            r_squared = calculate_r_squared(df[col1], df[col2])
-            
-            if r_squared > 1 - 1e-9:
-                print(f"High R² ({r_squared:.12f}) found between {col1} and {col2}")
-                columns_to_remove.add(col2)  # Remove the last column of the pair
+    # Create a heatmap of correlations
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, center=0)
+    plt.title('Correlation Heatmap')
+    plt.tight_layout()
+    plt.savefig('../output/correlation_heatmap.png')
+    plt.close()
 
-    # Drop the identified columns
-    if columns_to_remove:
-        print(f"Proposed Columns to remove: {', '.join(columns_to_remove)}")
-        #df = df.drop(columns=columns_to_remove)
-    else:
-        print("No columns found to remove.")
+    # Find high correlations (in absolute value)
+    high_correlations = []
+    for i in range(len(correlation_matrix.columns)):
+        for j in range(i):
+            if abs(correlation_matrix.iloc[i, j]) > 0.80:  # threshold
+                high_correlations.append((correlation_matrix.index[i], 
+                                        correlation_matrix.columns[j], 
+                                        correlation_matrix.iloc[i, j]))
 
-    # Save the updated DataFrame
-    df.to_csv(output_file, index=False)
-    print(f"Updated file saved to: {output_file}")
+    # Sort high correlations by absolute value
+    high_correlations.sort(key=lambda x: abs(x[2]), reverse=True)
+
+    # Print high correlations
+    print("High correlations (|r| > 0.80):")
+    for var1, var2, corr in high_correlations:
+        print(f"{var1} - {var2}: {corr:.2f}")
+
+    # Save high correlations to a CSV file
+    correlations_df = pd.DataFrame(high_correlations, columns=['Variable 1', 'Variable 2', 'Correlation'])
+    correlations_df.to_csv('../output/high_correlations.csv', index=False)
+
+    print("\nHeatmap and high correlations have been saved in the 'output' folder.")
+
+if __name__ == "__main__":
+    detect_highly_correlated_columns()
