@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import os
 
@@ -44,18 +43,6 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
 
     # Apply one-hot encoding for 'Hogwarts_House'
     df = pd.get_dummies(df, columns=['Hogwarts_House'], prefix='House')
-
-    # Select numerical columns of type float64
-    numerical_columns = df.select_dtypes(include=['float64']).columns
-
-    # Manual normalization for float64 columns using NumPy
-    X = df[numerical_columns].values
-    mean = np.mean(X, axis=0)
-    std = np.std(X, axis=0)
-    
-    # Normalize the numerical columns
-    X_normalized = (X - mean) / std
-    df[numerical_columns] = X_normalized
 
     # Reset the index to a continuous sequence
     df = df.reset_index(drop=True)

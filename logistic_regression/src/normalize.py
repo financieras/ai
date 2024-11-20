@@ -22,8 +22,8 @@ def normalize_data(input_file='preprocessed_data.csv', output_file='normalized_d
     # Load the dataset
     df = pd.read_csv(input_path)
 
-    # Identify the last 12 columns
-    columns_to_normalize = df.columns[-12:]
+    # Select numerical columns of type float64
+    columns_to_normalize = df.select_dtypes(include=['float64']).columns
 
     # Function to normalize using mean and standard deviation
     def normalize(column):
@@ -31,7 +31,7 @@ def normalize_data(input_file='preprocessed_data.csv', output_file='normalized_d
         std = column.std()
         return (column - mean) / std
 
-    # Apply normalization to the last 12 columns
+    # Apply normalization to the float64 columns
     df[columns_to_normalize] = df[columns_to_normalize].apply(normalize)
 
     # Save the normalized dataset
@@ -39,7 +39,7 @@ def normalize_data(input_file='preprocessed_data.csv', output_file='normalized_d
 
     print(f"Normalization completed. Data saved in '{output_file}'.")
 
-    return df  # Optional: return the normalized DataFrame
+    #return df
 
 if __name__ == "__main__":
     # This block will execute only if the script is run directly
