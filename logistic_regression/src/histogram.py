@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def main():
+def generate_histogram():
     # Read the dataset
     df = pd.read_csv('../datasets/preprocessed_data.csv')
     
@@ -38,11 +38,13 @@ def main():
     plt.tight_layout()
     
     # Save the plot
-    plt.savefig('histogram.png')
+    plt.savefig('../output/histogram.png')
     plt.close()
 
+    print("\nThe histogram graph has been saved in the 'output' folder.")
+
 if __name__ == "__main__":
-    main()
+    generate_histogram()
 
 
 '''

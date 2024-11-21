@@ -4,6 +4,8 @@ import preprocessing
 import correlations
 import describe
 import normalize
+import histogram
+import scatter_plot
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -18,10 +20,11 @@ def show_menu():
     {c.CYAN}2.{c.BLUE} Detect highly correlated columns
     {c.CYAN}3.{c.BLUE} Describe dataset (max, min, ...)
     {c.CYAN}4.{c.BLUE} Normalize dataset
+    {c.CYAN}5.{c.BLUE} Histogram
+    {c.CYAN}6.{c.BLUE} Scatter Plot
     {c.YELLOW}\t   ----  BONUS  ----
-    {c.CYAN}5.{c.BLUE} Option 5
-    {c.CYAN}6.{c.BLUE} Option 6
-    {c.CYAN}7.{c.BLUE} Option 7
+    {c.CYAN}8.{c.BLUE} Option 8
+    {c.CYAN}9.{c.BLUE} Option 9
     {c.CYAN}0. Exit
     {c.PURPLE}{'='*36}{c.RESET}
     """
@@ -44,6 +47,12 @@ def execute_option(choice):
     elif choice == 4:
         print(f"{c.CYAN}=== Normalizing Dataset ==={c.RESET}\n")
         normalize.normalize_data()
+    elif choice == 5:
+        print(f"{c.CYAN}=== Making the histogram... ==={c.RESET}\n")
+        histogram.generate_histogram()
+    elif choice == 6:
+        print(f"{c.CYAN}=== Making the Scatter Plot... ==={c.RESET}\n")
+        scatter_plot.generate_scatter_plot()
     else:
         print(f"{c.RED}Invalid Option{c.RESET}")
     

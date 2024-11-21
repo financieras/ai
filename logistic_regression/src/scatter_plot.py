@@ -3,17 +3,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-def main():
+def generate_scatter_plot():
     # Read the dataset
-    df = pd.read_csv('ai/logistic_regression/datasets/dataset_train.csv')
+    df = pd.read_csv('../datasets/preprocessed_data.csv')
     
     # Get list of course columns
-    '''courses = ['Arithmancy', 'Astronomy', 'Herbology', 'Divination', 'Muggle_Studies',
+    courses = ['Arithmancy', 'Astronomy', 'Herbology', 'Defense_Against_the_Dark_Arts', 'Divination', 'Muggle_Studies',
               'Ancient_Runes', 'History_of_Magic', 'Transfiguration', 'Potions',
               'Care_of_Magical_Creatures', 'Charms', 'Flying']
-    '''
-
-    courses = df.columns[-13:]
 
     # Calculate correlation matrix
     correlation_matrix = df[courses].corr()
@@ -22,10 +19,15 @@ def main():
     # Get upper triangle of correlation matrix
     upper_tri = correlation_matrix.where(np.triu(np.ones(correlation_matrix.shape), k=1).astype(bool))
     
-    # Find the maximum correlation value and its position
-    max_corr = upper_tri.max().max()
-    feature1, feature2 = np.where(upper_tri == max_corr)
+
+    # Find the two most correlated features (in absolute value)
+    upper_tri_abs = np.abs(upper_tri)
+    max_corr_abs = upper_tri_abs.max().max()
+    feature1, feature2 = np.where(upper_tri_abs == max_corr_abs)
     feature1, feature2 = courses[feature1[0]], courses[feature2[0]]
+
+    # Retrieve the original correlation value
+    max_corr = upper_tri.loc[feature1, feature2]
     
     # Create scatter plot
     plt.figure(figsize=(10, 8))
@@ -37,21 +39,21 @@ def main():
     plt.plot(df[feature1], p(df[feature1]), "r--", alpha=0.8)
     
     # Add correlation coefficient to title
-    plt.title(f'Correlation between {feature1} and {feature2}\nCorrelation coefficient: {max_corr:.3f}')
+    plt.title(f'Correlation between {feature1} and {feature2}\nCorrelation coefficient: {max_corr_abs:.3f}')
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     
     # Print the correlation value
     print(f"The most similar features are {feature1} and {feature2}")
-    print(f"Their correlation coefficient is: {max_corr:.3f}")
+    print(f"Their correlation coefficient in abs is: {max_corr:.3f}")
     
     # Adjust layout and save
     plt.tight_layout()
-    plt.savefig('scatter_plot.png')
+    plt.savefig('../output/scatter_plot.png')
     plt.close()
 
 if __name__ == "__main__":
-    main()
+    generate_scatter_plot()
 
 '''
 Este script:
