@@ -42,7 +42,7 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     df['Best_Hand'] = df['Best_Hand'].map({'Left': 0, 'Right': 1})
 
     # Apply one-hot encoding for 'Hogwarts_House'
-    df = pd.get_dummies(df, columns=['Hogwarts_House'], prefix='House')
+    #df = pd.get_dummies(df, columns=['Hogwarts_House'], prefix='House')
 
     # Reset the index to a continuous sequence
     df = df.reset_index(drop=True)

@@ -4,7 +4,7 @@ import seaborn as sns
 
 def main():
     # Read the dataset
-    df = pd.read_csv('ai/logistic_regression/datasets/preprocessed_data.csv')
+    df = pd.read_csv('../datasets/preprocessed_data.csv')
     
     # Get list of course columns (excluding non-course columns)
     courses = ['Arithmancy', 'Astronomy', 'Herbology', 'Divination', 'Muggle_Studies',
