@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-def normalize_data(input_file='preprocessed_data.csv', output_file='normalized_data.csv'):
+def normalize_data(input_file='../datasets/preprocessed_data.csv', output_file='../datasets/normalized_data.csv'):
     """
     Normalize the last 12 columns of a given CSV file using mean and standard deviation.
 
@@ -14,13 +14,11 @@ def normalize_data(input_file='preprocessed_data.csv', output_file='normalized_d
     pd.DataFrame: The normalized DataFrame.
     """
     
-    # Build complete paths
-    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    input_path = os.path.join(base_path, 'datasets', input_file)
-    output_path = os.path.join(base_path, 'datasets', output_file)
+    # Read the dataset
+    df = pd.read_csv(input_file)
 
-    # Load the dataset
-    df = pd.read_csv(input_path)
+    # Apply one-hot encoding for 'Hogwarts_House'
+    df = pd.get_dummies(df, columns=['Hogwarts_House'], prefix='House')
 
     # Select numerical columns of type float64
     columns_to_normalize = df.select_dtypes(include=['float64']).columns
@@ -35,11 +33,9 @@ def normalize_data(input_file='preprocessed_data.csv', output_file='normalized_d
     df[columns_to_normalize] = df[columns_to_normalize].apply(normalize)
 
     # Save the normalized dataset
-    df.to_csv(output_path, index=False)
+    df.to_csv(output_file, index=False)
 
     print(f"Normalization completed. Data saved in '{output_file}'.")
-
-    #return df
 
 if __name__ == "__main__":
     # This block will execute only if the script is run directly

@@ -41,9 +41,6 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     # Convert 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
     df['Best_Hand'] = df['Best_Hand'].map({'Left': 0, 'Right': 1})
 
-    # Apply one-hot encoding for 'Hogwarts_House'
-    #df = pd.get_dummies(df, columns=['Hogwarts_House'], prefix='House')
-
     # Reset the index to a continuous sequence
     df = df.reset_index(drop=True)
 
@@ -51,8 +48,8 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     if 'Index' in df.columns:
         df = df.drop('Index', axis=1)
 
-    # Save the preprocessed DataFrame to a new CSV file, including the index as 'Index'
-    df.to_csv(output_file, index=True, index_label='Index')
+    # Save the preprocessed DataFrame to a new CSV file
+    df.to_csv(output_file, index=False)
 
     print(f"Preprocessing completed. Output saved to: {output_file}")
 
