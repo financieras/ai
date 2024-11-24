@@ -1,5 +1,4 @@
 import pandas as pd
-import os
 
 def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../datasets/preprocessed_data.csv'):
     """
@@ -15,13 +14,8 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     - Converting 'Birthday' to datetime format
     - Renaming columns by replacing spaces with underscores
     - Converting 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
-    - Applying one-hot encoding to 'Hogwarts_House'
-    - Normalizing numerical columns (float64)
     - Resetting the index and dropping the original 'Index' column if present.
     """
-    
-    # Ensure the output directory exists
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
     # Read the CSV file into a DataFrame
     df = pd.read_csv(input_file)

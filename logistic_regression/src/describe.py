@@ -1,11 +1,6 @@
 import pandas as pd
 import scipy.stats as stats
 from tabulate import tabulate
-import sys
-
-def load_data(file_path):
-    """Load the dataset from the CSV file."""
-    return pd.read_csv(file_path)
 
 def calculate_metrics(df):
     """Calculate metrics for float columns."""
@@ -27,7 +22,7 @@ def calculate_metrics(df):
             "IQR": df[col].quantile(0.75) - df[col].quantile(0.25),
             "Skewness": df[col].skew(),                     # Asimetría
             "Kurtosis": df[col].kurtosis(),                 # Kurtosis
-            "CV": abs(df[col].std() / df[col].mean()) * 100  # Coefficient of Variation in percent
+            "CV": abs(df[col].std() / df[col].mean())       # Coefficient of Variation
         }
     
     return metrics
@@ -38,10 +33,8 @@ def print_metrics_table(metrics):
     headers = [""] + list(metrics.keys())
     
     metrics_to_display = [
-        "Count", "Mean", "Std", "Min", "25%", 
-        "50%", "75%", "Max", "IQR", 
-        "Skewness", "Kurtosis", "CV"
-    ]
+        "Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max",
+        "IQR", "Skewness", "Kurtosis", "CV"]
     
     for metric in metrics_to_display:
         row = [metric]
@@ -54,14 +47,9 @@ def print_metrics_table(metrics):
 
 def analyze_dataset(file_path='../datasets/preprocessed_data.csv'):
     """Analyze dataset by loading and calculating metrics."""
-    df = load_data(file_path)
+    df = pd.read_csv(file_path)
     metrics = calculate_metrics(df)
     print_metrics_table(metrics)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python describe.py <csv_file>")
-        sys.exit(1)
-    
-    file_path = sys.argv[1]
-    analyze_dataset(file_path)
+    analyze_dataset()
