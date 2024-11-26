@@ -56,7 +56,7 @@ def execute_option(choice):
         pair_plot.exploring_feature_relationships()
     elif choice == 7:
         print(f"{c.CYAN}=== Normalizing Dataset ==={c.RESET}\n")
-        normalize.normalize_data()
+        X_train, X_val, X_test, y_train, y_val, y_test = normalize.prepare_data()
     else:
         print(f"{c.RED}Invalid Option{c.RESET}")
     

@@ -3,6 +3,26 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def generate_histogram():
+    """
+    Generates and saves a histogram visualization comparing score distributions across Hogwarts houses
+    for each course. The visualization helps identify which courses have homogeneous or heterogeneous
+    distributions among houses.
+    
+    The function:
+    - Reads preprocessed data from CSV
+    - Creates a 4x3 subplot grid for 12 courses
+    - Generates overlapping histograms for each house in each course
+    - Uses different colors for each house
+    - Saves the resulting visualization as a PNG file
+    
+    Analysis shows that:
+    1. Care of Magical Creatures has the most homogeneous distribution
+    2. Some courses like Potions show clear differences between houses
+    3. Arithmancy shows slight variations but maintains general uniformity
+    
+    The output is saved as 'histogram.png' in the output folder.
+    """
+
     # Read the dataset
     df = pd.read_csv('../datasets/preprocessed_data.csv')
     
@@ -48,32 +68,31 @@ if __name__ == "__main__":
 
 
 '''
-Respuesta a la pregunta:
+Answer to the question:
 
 > "Which Hogwarts course has a homogeneous score distribution between all four houses?"
 
-Podemos descartar los histogramas bimodales y quedarnos con las siguientes tres opciones:
+We can discard bimodal histograms and focus on the following three options:
 
 1. **`Arithmancy`**
-- Muestra una distribución bastante superpuesta
-- Sin embargo, se puede ver que `Hufflepuff` (rojo) tiene una ligera tendencia hacia puntuaciones más altas
-- `Ravenclaw` (azul) tiene una concentración ligeramente menor en el pico central
+- Shows considerably overlapped distribution
+- However, `Hufflepuff` (red) shows a slight tendency towards higher scores
+- `Ravenclaw` (blue) has slightly lower concentration at the central peak
 
 2. **`Potions`**
-- Aunque hay superposición, las distribuciones están bastante dispersas
-- Se pueden ver diferencias claras entre casas
-- `Slytherin` (verde) tiende a tener puntuaciones más altas
--Las distribuciones son más anchas y menos uniformes entre casas
+- Although there is overlap, the distributions are quite dispersed
+- Clear differences can be seen between houses
+- `Slytherin` (green) tends to have higher scores
+- Distributions are wider and less uniform between houses
 
 3. **`Care of Magical Creatures`**
-- Muestra la superposición más uniforme de los tres
-- Los picos de todas las casas están prácticamente en el mismo punto
-- Las formas de las distribuciones son muy similares para todas las casas
-- La dispersión (ancho de la distribución) es muy similar para todas las casas
-- Es difícil distinguir diferencias significativas entre casas
+- Shows the most uniform overlap of the three
+- Peaks for all houses are practically at the same point
+- Distribution shapes are very similar for all houses
+- Dispersion (distribution width) is very similar for all houses
+- It's difficult to distinguish significant differences between houses
 
-
-**Conclusión**
-- La distribución más uniforme es **`Care of Magical Creatures`**.
-- Este curso muestra la distribución más equilibrada y similar entre todas las casas, con patrones de puntuación muy parecidos independientemente de la casa a la que pertenezcan los estudiantes.
+**Conclusion**
+- The most uniform distribution is **`Care of Magical Creatures`**
+- This course shows the most balanced and similar distribution across all houses, with very similar scoring patterns regardless of student house affiliation
 '''
