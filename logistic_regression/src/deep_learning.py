@@ -15,6 +15,7 @@ class NeuralNetwork:
         self.learning_rate = learning_rate
         
         # Initialize weights and biases
+        # The weights are initialized by multiplying by sqrt(2/n) to obtain more uniform values, thereby avoiding extreme values
         self.weights1 = np.random.randn(input_size, hidden1_size) * np.sqrt(2.0/input_size)
         self.bias1 = np.zeros((1, hidden1_size))
         
