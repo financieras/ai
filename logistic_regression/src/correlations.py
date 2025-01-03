@@ -1,9 +1,10 @@
 import pandas as pd
 import seaborn as sns
+import matplotlib
+matplotlib.use('TkAgg')  # Set the backend to TkAgg for interactive plotting
 import matplotlib.pyplot as plt
 import numpy as np
 from tabulate import tabulate
-from PIL import Image
 
 def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.csv"):
     """
@@ -20,6 +21,7 @@ def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.c
     """
     CORRELATION_THRESHOLD = 0.8   # Cut-off Correlation
     output_image_file = '../output/correlation_heatmap.png'
+    output_csv_file = '../output/high_correlations.csv'
 
     # Load the dataset
     df = pd.read_csv(input_file, index_col=0)
@@ -30,7 +32,7 @@ def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.c
     # Calculate the correlation matrix
     correlation_matrix = df[numeric_columns].corr()
 
-    # Create a heatmap of correlations
+    # Create a heatmap of correlations and save it
     plt.figure(figsize=(12, 10))
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, center=0)
     plt.title('Correlation Heatmap')
@@ -58,7 +60,9 @@ def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.c
         \t- Find high correlations (in absolute value)
         \t- Sort high correlations by absolute value
         \t- Print high correlations (|r| > {CORRELATION_THRESHOLD})
-        \t- Save the heatmap of correlations to a image file {output_image_file}
+        \t- Save the heatmap of correlations to a image file: {output_image_file}
+        \t- Print high correlations table
+        \t- Save high correlations to a CSV file: {output_csv_file}
         \t- Show heatmap image
         ''')
 
@@ -71,12 +75,26 @@ def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.c
 
     # Save high correlations to a CSV file
     correlations_df = pd.DataFrame(high_correlations, columns=['Variable 1', 'Variable 2', 'Correlation'])
-    correlations_df.to_csv('../output/high_correlations.csv', index=False)
+    correlations_df.to_csv(output_csv_file, index=False)
 
     print(f"\nHeatmap and high correlations have been saved in the 'output' folder.")
     
-    # Show heatmap image
-    img = Image.open(output_image_file)
-    img.show()
+    # Ask user if they want to see the heatmap
+    while True:
+        response = input("\nWould you like to see the correlation image? (y/n): ").lower().strip()
+        if response in ['y', 'yes']:
+            # Show heatmap image using matplotlib
+            img = plt.imread(output_image_file)
+            plt.figure(figsize=(12, 10))
+            plt.imshow(img)
+            plt.axis('off')
+            plt.show()
+            break
+        elif response in ['n', 'no']:
+            print("The graph will not be displayed. You can find it at:", output_image_file)
+            break
+        else:
+            print("Please answer 'y' or 'n'")
+
 if __name__ == "__main__":
     detect_highly_correlated_columns()
