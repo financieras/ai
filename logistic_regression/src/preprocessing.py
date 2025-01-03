@@ -45,6 +45,16 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     # Save the preprocessed DataFrame to a new CSV file
     df.to_csv(output_file, index=False)
 
+    print(f'''The preprocessing steps include:\n
+    \t- Read the file {input_file}
+    \t- Dropping rows with missing data
+    \t- Removing duplicate rows
+    \t- Converting 'Birthday' to datetime format
+    \t- Renaming columns by replacing spaces with underscores
+    \t- Converting 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
+    \t- Resetting the index and dropping the original 'Index' column if present.
+    \t- Save the preprocessed DataFrame to a new CSV file.
+        ''')
     print(f"Preprocessing completed. Output saved to: {output_file}")
 
     return df
