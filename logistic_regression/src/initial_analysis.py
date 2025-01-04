@@ -1,4 +1,3 @@
-import os
 import aux.colors as c
 import pandas as pd
 import numpy as np
@@ -15,8 +14,10 @@ def initial_exploration(input_file='../datasets/dataset_train.csv'):
 
     input(f"\n{c.YELLOW}Press ENTER to continue...{c.RESET}")
 
-    print(df.head(10))  # show the first rows
+    # Show the first rows
+    print(df.head(10))
 
+    # Null values by column
     print(f"\n{c.BLUE}Null values by column{c.RESET}\n")
     print(df.isnull().sum())
 
@@ -27,6 +28,25 @@ def initial_exploration(input_file='../datasets/dataset_train.csv'):
     # Analysis of unique values for 'Best Hand'
     print("\nUnique values in Best Hand:")
     print(df['Best Hand'].value_counts())
+
+    # Search correlation 1 or -1
+    
+    # Select numeric columns (float64)
+    numeric_columns = df.select_dtypes(include=['float64']).columns
+
+    # Calculate the correlation matrix
+    correlation_matrix = df[numeric_columns].corr()
+
+    # Find high correlations (in absolute value)
+    for i in range(len(correlation_matrix.columns)):
+        for j in range(i):
+            coef_correl = correlation_matrix.iloc[i, j]
+            if abs(coef_correl) > 0.99:
+                correlation_matrix.index[i], correlation_matrix.columns[j]
+                print(f"A high correlation ratio has been found between these two features:")
+                print(f"- {correlation_matrix.index[i]}")
+                print(f"- {correlation_matrix.index[j]}")
+                print(f"Coeficient of correlation: {coef_correl}")
 
 
 if __name__ == "__main__":
