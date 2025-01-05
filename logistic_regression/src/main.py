@@ -18,17 +18,17 @@ def pause():
 def show_menu():
     text_menu = f"""
     {c.PURPLE}===========   M E N U   ===========
-    {c.CYAN}1.{c.BLUE} Initial data analysis
-    {c.CYAN}2.{c.BLUE} Preprocesing data
-    {c.CYAN}3.{c.BLUE} Detect highly correlated columns
-    {c.CYAN}4.{c.BLUE} Describe dataset (max, min, ...)
-    {c.CYAN}5.{c.BLUE} Histogram
-    {c.CYAN}6.{c.BLUE} Scatter Plot
-    {c.CYAN}7.{c.BLUE} Pair Plot
-    {c.CYAN}8.{c.BLUE} Normalize dataset
-    {c.CYAN}9.{c.BLUE} Option 8
-    {c.CYAN}10.{c.BLUE} Option 9
-    {c.CYAN}0. Exit
+    {c.CYAN} 1.{c.BLUE} Initial data analysis
+    {c.CYAN} 2.{c.BLUE} Detect highly correlated columns
+    {c.CYAN} 3.{c.BLUE} Preprocessing data
+    {c.CYAN} 4.{c.BLUE} Describe dataset (max, min, ...)
+    {c.CYAN} 5.{c.BLUE} Histogram
+    {c.CYAN} 6.{c.BLUE} Scatter Plot
+    {c.CYAN} 7.{c.BLUE} Pair Plot
+    {c.CYAN} 8.{c.BLUE} Normalize dataset
+    {c.CYAN} 9.{c.BLUE} Option 9
+    {c.CYAN}10.{c.BLUE} Option 10
+    {c.CYAN} 0. Exit
     {c.PURPLE}{'='*36}{c.RESET}
     """
     print(text_menu)
@@ -42,11 +42,11 @@ def execute_option(choice):
         print(f"{c.CYAN}=== Initial data analysis ==={c.RESET}\n")
         initial_analysis.initial_exploration()
     elif choice == 2:
-        print(f"{c.CYAN}=== Preprocessing Data ==={c.RESET}\n")
-        preprocessing.preprocess_data()
-    elif choice == 3:
         print(f"{c.CYAN}=== Detecting Highly Correlated Columns ==={c.RESET}\n")
         correlations.detect_highly_correlated_columns()
+    elif choice == 3:
+        print(f"{c.CYAN}=== Preprocessing Data ==={c.RESET}\n")
+        preprocessing.preprocess_data()
     elif choice == 4:
         print(f"{c.CYAN}=== Analyzing Dataset ==={c.RESET}\n")
         describe.analyze_dataset()

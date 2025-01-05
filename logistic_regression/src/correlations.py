@@ -1,3 +1,4 @@
+import aux.colors as c
 import pandas as pd
 import seaborn as sns
 import matplotlib
@@ -6,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tabulate import tabulate
 
-def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.csv"):
+def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv"):
     """
     Detect and visualize highly correlated columns in a dataset.
 
@@ -14,20 +15,23 @@ def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.c
     creates a heatmap, and identifies highly correlated pairs of columns.
 
     Args:
-    input_file (str): Path to the input CSV file. Default is "../datasets/preprocessed_data.csv".
+    input_file (str): Path to the input CSV file. Default is "../datasets/dataset_train.csv".
 
     Returns:
     None. Outputs are saved as files and printed to console.
     """
-    CORRELATION_THRESHOLD = 0.8   # Cut-off Correlation
+    CORRELATION_THRESHOLD = 0.6   # Cut-off Correlation
     output_image_file = '../output/correlation_heatmap.png'
     output_csv_file = '../output/high_correlations.csv'
 
     # Load the dataset
     df = pd.read_csv(input_file, index_col=0)
 
-    # Select numeric columns (float64, int64, and bool)
-    numeric_columns = df.select_dtypes(include=['float64', 'int64', 'bool']).columns
+    ### Search very high correlations ###
+    print(f"\n{c.BLUE}Search very high correlations{c.RESET}\n")
+
+    # Select numeric columns (float64)
+    numeric_columns = df.select_dtypes(include=['float64']).columns
 
     # Calculate the correlation matrix
     correlation_matrix = df[numeric_columns].corr()
@@ -43,7 +47,7 @@ def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.c
     # Find high correlations (in absolute value)
     high_correlations = []
     for i in range(len(correlation_matrix.columns)):
-        for j in range(i):
+        for j in range(i):  # exclude autocorrelations
             if abs(correlation_matrix.iloc[i, j]) > CORRELATION_THRESHOLD:  # threshold
                 high_correlations.append((correlation_matrix.index[i], 
                                         correlation_matrix.columns[j], 
@@ -77,7 +81,8 @@ def detect_highly_correlated_columns(input_file="../datasets/preprocessed_data.c
     correlations_df = pd.DataFrame(high_correlations, columns=['Variable 1', 'Variable 2', 'Correlation'])
     correlations_df.to_csv(output_csv_file, index=False)
 
-    print(f"\nHeatmap and high correlations have been saved in the 'output' folder.")
+    # Heatmap image and high correlations inform have been saved in the 'output' folder
+    print(f"\nHeatmap image and high correlations inform have been saved in the 'output' folder.")
     
     # Ask user if they want to see the heatmap
     while True:

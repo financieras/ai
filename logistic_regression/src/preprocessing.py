@@ -57,7 +57,6 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
         ''')
     print(f"Preprocessing completed. Output saved to: {output_file}")
 
-    return df
 
 if __name__ == "__main__":
     preprocess_data()

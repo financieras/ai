@@ -1,6 +1,8 @@
 Variable 1,Variable 2,Correlation
-Defense_Against_the_Dark_Arts,Astronomy,-0.9999999999999994
-Flying,History_of_Magic,-0.8971146065157801
-Flying,Transfiguration,-0.8724215440840071
-Charms,Muggle_Studies,0.8533725398562474
-Transfiguration,History_of_Magic,0.8465106099680925
+Defense Against the Dark Arts,Astronomy,-0.9999999999999984
+Flying,History of Magic,-0.8962834248882747
+Flying,Transfiguration,-0.8736726050021427
+Transfiguration,History of Magic,0.8492027176461879
+Charms,Muggle Studies,0.8476070313934803
+Charms,Herbology,0.7466140788572025
+Potions,History of Magic,0.6022108058942874
