@@ -56,20 +56,6 @@ def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv")
     # Sort high correlations by absolute value
     high_correlations.sort(key=lambda x: abs(x[2]), reverse=True)
 
-    print(f'''The detect highly correlated columns steps include:\n
-        \t- Read the file {input_file}
-        \t- Select numeric columns (float64, int64, and bool)
-        \t- Calculate the correlation matrix
-        \t- Create a heatmap of correlations
-        \t- Find high correlations (in absolute value)
-        \t- Sort high correlations by absolute value
-        \t- Print high correlations (|r| > {CORRELATION_THRESHOLD})
-        \t- Save the heatmap of correlations to a image file: {output_image_file}
-        \t- Print high correlations table
-        \t- Save high correlations to a CSV file: {output_csv_file}
-        \t- Show heatmap image
-        ''')
-
     # Print high correlations
     print(f"High correlations (|r| > {CORRELATION_THRESHOLD}):\n")
     table_data = []
@@ -86,7 +72,7 @@ def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv")
     
     # Ask user if they want to see the heatmap
     while True:
-        response = input("\nWould you like to see the correlation image? (y/n): ").lower().strip()
+        response = input(f"\n{c.CYAN}Would you like to see the correlation image? (y/n): {c.RESET}").lower().strip()
         if response in ['y', 'yes']:
             # Show heatmap image using matplotlib
             img = plt.imread(output_image_file)
@@ -96,10 +82,51 @@ def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv")
             plt.show()
             break
         elif response in ['n', 'no']:
-            print("The graph will not be displayed. You can find it at:", output_image_file)
+            print("\nThe graph will not be displayed. You can find it at:", output_image_file)
             break
         else:
             print("Please answer 'y' or 'n'")
+
+    input(f"\n{c.YELLOW}Press ENTER to continue...{c.RESET}")
+
+
+    # Drop the feature with a perfect correlation
+
+    if round(abs(high_correlations[0][2]), 10) == 1:
+        print(f"\n{c.BLUE}Drop the feature with a perfect correlation{c.RESET}\n")
+        print("There is a perfect correlation between two features.")
+        print("To properly train the neural network, we will remove one of them.")
+        print("The one that leaves the highest number of complete records will remain.")
+        feature1 = high_correlations[0][0]
+        feature2 = high_correlations[0][1]
+        # Which column to delete?
+        print(f"\n{c.BLUE}Which feature should I drop to avoid multicollinearity?{c.RESET}\n")
+        print(f"\t{c.GREEN}1. {feature1} or\n")
+        print(f"\t2. {feature2}{c.RESET}\n")
+
+        # Function to count complete records when deleting a column
+        def count_complete_records(df, column_to_drop):
+            df_temp = df.drop(columns=[column_to_drop])
+            return df_temp.dropna().shape[0]
+
+        # Count full records when removing Feature1
+        records_without_feature1 = count_complete_records(df,feature1)
+        print(f"Complete records after removing {feature1}: {records_without_feature1}")
+
+        # Count full records when removing Feature2
+        records_without_feature2 = count_complete_records(df, feature2)
+        print(f"Complete records after removing {feature2}: {records_without_feature2}")
+
+        # Determine which feature to remove
+        if records_without_feature1 >= records_without_feature2:
+            feature_to_drop = feature1
+            records_kept = records_without_feature1
+        else:
+            feature_to_drop = feature2
+            records_kept = records_without_feature2
+
+        print(f"It is recommended to {c.GREEN}remove {feature_to_drop}{c.RESET} to maintain {records_kept} complete records.")
+
 
 if __name__ == "__main__":
     detect_highly_correlated_columns()
