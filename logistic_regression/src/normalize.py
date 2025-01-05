@@ -47,9 +47,9 @@ def split_data(X, y, val_size, test_size, random_state=42):
     return X_train, X_val, X_test, y_train, y_val, y_test
 
 def prepare_data(
-    input_file='../datasets/preprocessed_data.csv',
-    output_file='../datasets/normalized_data.csv',
-    features=['Astronomy', 'Herbology', 'Potions', 'Charms', 'Flying'],
+    input_file='../datasets/dataset_preprocessed.csv',
+    output_file='../datasets/dataset_normalized.csv',
+    features=['Defense Against the Dark Arts', 'Herbology', 'Potions', 'Charms', 'Flying'],
     test_size=0.15,
     validation_size=0.15,
     random_state=42
@@ -76,15 +76,15 @@ def prepare_data(
     # Read the dataset
     df = pd.read_csv(input_file)
 
-    # Keep only Hogwarts_House column and specified features
-    columns_to_keep = ['Hogwarts_House'] + features
+    # Keep only 'Hogwarts House' column and specified features
+    columns_to_keep = ['Hogwarts House'] + features
 
     # Remove all columns except those to keep
     df = df.drop(df.columns.drop(columns_to_keep), axis=1)
 
-    # Apply one-hot encoding for 'Hogwarts_House' if not already encoded
-    if 'Hogwarts_House' in df.columns:
-        df = pd.get_dummies(df, columns=['Hogwarts_House'], prefix='House')
+    # Apply one-hot encoding for 'Hogwarts House' if not already encoded
+    if 'Hogwarts House' in df.columns:
+        df = pd.get_dummies(df, columns=['Hogwarts House'], prefix='House')
 
     # Select all float64 columns for normalization
     float_columns = df.select_dtypes(include=['float64']).columns
@@ -102,7 +102,7 @@ def prepare_data(
 
     # Select features and target variables for training
     X = df[features]
-    y = df[['House_Gryffindor', 'House_Hufflepuff', 'House_Ravenclaw', 'House_Slytherin']]
+    y = df[['House Gryffindor', 'House Hufflepuff', 'House Ravenclaw', 'House Slytherin']]
 
     # Split the data
     X_train, X_val, X_test, y_train, y_val, y_test = split_data(

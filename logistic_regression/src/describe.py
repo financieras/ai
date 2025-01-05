@@ -50,7 +50,7 @@ def print_metrics_table(metrics):
     
     print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
 
-def analyze_dataset(file_path='../datasets/preprocessed_data.csv'):
+def analyze_dataset(file_path='../datasets/dataset_preprocessed.csv'):
     """Analyze dataset by loading and calculating metrics."""
     try:
         df = pd.read_csv(file_path)

@@ -126,7 +126,16 @@ def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv")
             records_kept = records_without_feature2
 
         print(f"It is recommended to {c.GREEN}remove {feature_to_drop}{c.RESET} to maintain {records_kept} complete records.")
+        
+        # Eliminar la característica especificada
+        df_clean = df.drop(columns=[feature_to_drop])
+        print(f"\nCaracterística eliminada: {feature_to_drop}")
+        print(f"Número de columnas restantes: {df_clean.shape[1]}")
 
+        # Guardar el DataFrame limpio
+        output_file = '../datasets/dataset_cleaned.csv'
+        df_clean.to_csv(output_file)
+        print(f"\nDataset limpio guardado en: {output_file}")
 
 if __name__ == "__main__":
     detect_highly_correlated_columns()

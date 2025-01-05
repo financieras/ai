@@ -1,6 +1,6 @@
 import pandas as pd
 
-def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../datasets/preprocessed_data.csv'):
+def preprocess_data(input_file='../datasets/dataset_cleaned.csv', output_file='../datasets/dataset_preprocessed.csv'):
     """
     Preprocess the input dataset and save the result to a new CSV file.
 
@@ -29,11 +29,8 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     # Convert 'Birthday' to datetime format
     df['Birthday'] = pd.to_datetime(df['Birthday'])
 
-    # Rename columns by replacing spaces with underscores
-    df.columns = df.columns.str.replace(' ', '_')
-
-    # Convert 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
-    df['Best_Hand'] = df['Best_Hand'].map({'Left': 0, 'Right': 1})
+    # Convert 'Best Hand' to a binary variable (0 for Left, 1 for Right)
+    df['Best Hand'] = df['Best Hand'].map({'Left': 0, 'Right': 1})
 
     # Reset the index to a continuous sequence
     df = df.reset_index(drop=True)
@@ -51,7 +48,7 @@ def preprocess_data(input_file='../datasets/dataset_train.csv', output_file='../
     \t- Removing duplicate rows
     \t- Converting 'Birthday' to datetime format
     \t- Renaming columns by replacing spaces with underscores
-    \t- Converting 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
+    \t- Converting 'Best Hand' to a binary variable (0 for Left, 1 for Right)
     \t- Resetting the index and dropping the original 'Index' column if present.
     \t- Save the preprocessed DataFrame to a new CSV file.
         ''')

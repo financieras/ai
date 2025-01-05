@@ -5,13 +5,11 @@ import numpy as np
 
 def generate_scatter_plot():
     # Read the dataset
-    df = pd.read_csv('../datasets/preprocessed_data.csv')
+    df = pd.read_csv('../datasets/dataset_preprocessed.csv')
     
-    # Get list of course columns
-    courses = ['Arithmancy', 'Astronomy', 'Herbology', 'Defense_Against_the_Dark_Arts', 'Divination', 'Muggle_Studies',
-              'Ancient_Runes', 'History_of_Magic', 'Transfiguration', 'Potions',
-              'Care_of_Magical_Creatures', 'Charms', 'Flying']
-
+    # Get list of course columns (excluding non-course columns)
+    courses = df.select_dtypes(include=['float64']).columns
+    
     # Calculate correlation matrix
     correlation_matrix = df[courses].corr()
     
@@ -31,7 +29,7 @@ def generate_scatter_plot():
     
     # Create scatter plot
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(data=df, x=feature1, y=feature2, hue='Hogwarts_House', alpha=0.6)
+    sns.scatterplot(data=df, x=feature1, y=feature2, hue='Hogwarts House', alpha=0.6)
     
     # Add correlation line
     z = np.polyfit(df[feature1], df[feature2], 1)
@@ -39,13 +37,13 @@ def generate_scatter_plot():
     plt.plot(df[feature1], p(df[feature1]), "r--", alpha=0.8)
     
     # Add correlation coefficient to title
-    plt.title(f'Correlation between {feature1} and {feature2}\nCorrelation coefficient: {max_corr_abs:.3f}')
+    plt.title(f'Correlation between {feature1} and {feature2}\nCorrelation coefficient: {max_corr:.3f}')
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     
     # Print the correlation value
     print(f"The most similar features are {feature1} and {feature2}")
-    print(f"Their correlation coefficient in abs is: {max_corr:.3f}")
+    print(f"Their correlation coefficient is: {max_corr:.3f}")
     
     # Adjust layout and save
     plt.tight_layout()

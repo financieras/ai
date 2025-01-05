@@ -24,13 +24,11 @@ def generate_histogram():
     """
 
     # Read the dataset
-    df = pd.read_csv('../datasets/preprocessed_data.csv')
+    df = pd.read_csv('../datasets/dataset_preprocessed.csv')
     
     # Get list of course columns (excluding non-course columns)
-    courses = ['Arithmancy', 'Astronomy', 'Herbology', 'Divination', 'Muggle_Studies',
-              'Ancient_Runes', 'History_of_Magic', 'Transfiguration', 'Potions',
-              'Care_of_Magical_Creatures', 'Charms', 'Flying']
-    
+    courses = df.select_dtypes(include=['float64']).columns
+
     # Create a figure with subplots for each course
     fig = plt.figure(figsize=(20, 15))
     fig.suptitle('Distribution of Scores by House for Each Course', fontsize=16)
@@ -40,10 +38,10 @@ def generate_histogram():
         plt.subplot(4, 3, idx)
         
         # Create histogram for current course
-        sns.histplot(data=df, x=course, hue='Hogwarts_House', 
+        sns.histplot(data=df, x=course, hue='Hogwarts House', 
                     bins=20, alpha=0.5, multiple="layer")
         
-        plt.title(course.replace('_', ' '))
+        plt.title(course)
         plt.xlabel('Score')
         plt.ylabel('Count')
         
