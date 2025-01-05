@@ -87,5 +87,6 @@ def initial_exploration(input_file='../datasets/dataset_train.csv'):
 
     print(f"Se recomienda eliminar {feature_to_drop} para mantener {records_kept} registros completos.")
 
+
 if __name__ == "__main__":
     initial_exploration()
