@@ -12,7 +12,6 @@ def preprocess_data(input_file='../datasets/dataset_cleaned.csv', output_file='.
     - Dropping rows with missing data
     - Removing duplicate rows
     - Converting 'Birthday' to datetime format
-    - Renaming columns by replacing spaces with underscores
     - Converting 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
     - Resetting the index and dropping the original 'Index' column if present.
     """
@@ -47,7 +46,6 @@ def preprocess_data(input_file='../datasets/dataset_cleaned.csv', output_file='.
     \t- Dropping rows with missing data
     \t- Removing duplicate rows
     \t- Converting 'Birthday' to datetime format
-    \t- Renaming columns by replacing spaces with underscores
     \t- Converting 'Best Hand' to a binary variable (0 for Left, 1 for Right)
     \t- Resetting the index and dropping the original 'Index' column if present.
     \t- Save the preprocessed DataFrame to a new CSV file.
