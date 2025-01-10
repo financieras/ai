@@ -41,14 +41,20 @@ def generate_scatter_plot():
     plt.xlabel(feature1)
     plt.ylabel(feature2)
     
-    # Print the correlation value
-    print(f"The most similar features are {feature1} and {feature2}")
-    print(f"Their correlation coefficient is: {max_corr:.3f}")
-    
     # Adjust layout and save
     plt.tight_layout()
     plt.savefig('../output/scatter_plot.png')
     plt.close()
+
+    print("\nThe scratter_plot.png graph has been saved in the 'output' folder.")
+
+    print("\nQuestion:\nWhat are the two features that are similar?\n")
+
+    # Print the correlation value
+    print(f"The most similar features are {feature1} and {feature2}")
+    print(f"Their correlation coefficient is: {max_corr:.3f}")
+
+
 
 if __name__ == "__main__":
     generate_scatter_plot()

@@ -4,6 +4,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def exploring_feature_relationships():
+    print("\nQuestion:\nFrom this visualization, what features are you going to use for your logistic regression?\n")
+    print('''    Analyzing the graph, the courses that show better separation between houses
+    and therefore would be the most relevant for the logistic regression model are:\n
+    \t1. 'Defense Against the Dark Arts': Shows a clear separation between houses
+    \t2. 'Herbology': Particularly useful for distinguishing Hufflepuff
+    \t3. 'Potions': Presents good separation especially for Slytherin
+    \t4. 'Charms': Helps to distinguish Ravenclaw
+    \t5. 'Flying': Also shows useful separation patterns, especially for Gryffindor
+    
+    The courses that show greater overlap and therefore would be less useful for the model are:
+    \t- History of Magic
+    \t- Muggle Studies
+    \t- Ancient Runes
+    \t- Arithmancy
+    ''')
+
     # Cargar los datos
     df = pd.read_csv('../datasets/dataset_preprocessed.csv')
 
@@ -24,23 +40,6 @@ def exploring_feature_relationships():
 
     print("\nThe Pair Plot graph has been saved in the 'output' folder.")
 
+
 if __name__ == "__main__":
     exploring_feature_relationships()
-
-'''
-Analizando el gráfico las asignaturas que muestran mejor separación entre las casas
-y que por tanto serían las más relevantes para el modelo de regresión logística son:
-
-1. 'Defense Against the Dark Arts': Muestra una clara separación entre las casas
-2. 'Herbology' (Herbología): Particularmente útil para distinguir Hufflepuff
-3. 'Potions' (Pociones): Presenta buena separación especialmente para Slytherin
-4. 'Charms' (Encantamientos): Ayuda a distinguir Ravenclaw
-5. 'Flying' (Vuelo): También muestra patrones de separación útiles, especialmente para Gryffindor
-
-Las asignaturas que muestran mayor solapamiento y por tanto serían menos útiles para el modelo son:
-
-1. Historia de la Magia (History of Magic)
-2. Estudios Muggles (Muggle Studies)
-3. Runas Antiguas (Ancient Runes)
-4. Aritmancia (Arithmancy)
-'''

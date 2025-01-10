@@ -61,36 +61,34 @@ def generate_histogram():
 
     print("\nThe histogram graph has been saved in the 'output' folder.")
 
+    print("\nQuestion:\nWhich Hogwarts course has a homogeneous score distribution between all four houses?\n")
+
+    print('''Answer to the question:
+
+    We can discard bimodal histograms and focus on the following three options:
+
+    1. **`Arithmancy`**
+    - Shows considerably overlapped distribution
+    - However, `Hufflepuff` (red) shows a slight tendency towards higher scores
+    - `Ravenclaw` (blue) has slightly lower concentration at the central peak
+
+    2. **`Potions`**
+    - Although there is overlap, the distributions are quite dispersed
+    - Clear differences can be seen between houses
+    - `Slytherin` (green) tends to have higher scores
+    - Distributions are wider and less uniform between houses
+
+    3. **`Care of Magical Creatures`**
+    - Shows the most uniform overlap of the three
+    - Peaks for all houses are practically at the same point
+    - Distribution shapes are very similar for all houses
+    - Dispersion (distribution width) is very similar for all houses
+    - It's difficult to distinguish significant differences between houses
+
+    **Final Result**
+    - The most uniform distribution is **`Care of Magical Creatures`**
+    - This course shows the most balanced and similar distribution across all houses, with very similar scoring patterns regardless of student house affiliation
+    ''')
+
 if __name__ == "__main__":
     generate_histogram()
-
-
-'''
-Answer to the question:
-
-> "Which Hogwarts course has a homogeneous score distribution between all four houses?"
-
-We can discard bimodal histograms and focus on the following three options:
-
-1. **`Arithmancy`**
-- Shows considerably overlapped distribution
-- However, `Hufflepuff` (red) shows a slight tendency towards higher scores
-- `Ravenclaw` (blue) has slightly lower concentration at the central peak
-
-2. **`Potions`**
-- Although there is overlap, the distributions are quite dispersed
-- Clear differences can be seen between houses
-- `Slytherin` (green) tends to have higher scores
-- Distributions are wider and less uniform between houses
-
-3. **`Care of Magical Creatures`**
-- Shows the most uniform overlap of the three
-- Peaks for all houses are practically at the same point
-- Distribution shapes are very similar for all houses
-- Dispersion (distribution width) is very similar for all houses
-- It's difficult to distinguish significant differences between houses
-
-**Conclusion**
-- The most uniform distribution is **`Care of Magical Creatures`**
-- This course shows the most balanced and similar distribution across all houses, with very similar scoring patterns regardless of student house affiliation
-'''
