@@ -25,9 +25,6 @@ def normalize_data(input_file='../datasets/dataset_preprocessed.csv', output_fil
     columns_to_drop = ['First Name', 'Last Name', 'Birthday']
     df = df.drop(columns=columns_to_drop)
     
-    # Print DataFrame columns for debugging
-    print("Columns in DataFrame:", df.columns.tolist())
-
     # Select numerical columns to normalize (including Age which is already float64)
     columns_to_normalize = df.select_dtypes(include=['float64']).columns.tolist()
 
@@ -52,7 +49,10 @@ def normalize_data(input_file='../datasets/dataset_preprocessed.csv', output_fil
     print(f"Normalization completed. Data saved in '{output_file}'.")
 
     # Columns in DataFrame
-    print("Columns in DataFrame:", df.columns.tolist())
+    print("\nColumns in DataFrame:\n")
+    columns = df.columns.tolist()
+    for i, column in enumerate(columns, start=1):
+        print(f"{i}. {column}")
 
 
 if __name__ == "__main__":
