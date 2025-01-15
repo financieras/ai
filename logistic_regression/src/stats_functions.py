@@ -138,11 +138,95 @@ def predict_one_vs_all(X, weights_dict):
     Returns: predicted class labels
     """
     predictions = {}
+    classes = list(weights_dict.keys())
+    
+    # Calcular probabilidades para cada clase
     for class_name, weights in weights_dict.items():
         predictions[class_name] = sigmoid(np.dot(X, weights))
     
-    # Convert predictions dictionary to array
-    pred_array = np.column_stack([predictions[class_name] for class_name in weights_dict.keys()])
+    # Convertir predicciones a array
+    pred_array = np.column_stack([predictions[class_name] for class_name in classes])
     
-    # Return the class with highest probability
-    return list(weights_dict.keys())[np.argmax(pred_array, axis=1)]
+    # Obtener los índices de las probabilidades máximas
+    max_indices = np.argmax(pred_array, axis=1)
+    
+    # Convertir índices a nombres de clases
+    return [classes[idx] for idx in max_indices]
+
+
+
+###### FUNCTIONS TO MEASURE THE QUALITY OF THE FIT ######
+
+def ft_accuracy_score(y_true, y_pred):
+    """
+    This function exists in sklearn.
+    Calculate accuracy score.
+    y_true: array of true labels
+    y_pred: array of predicted labels
+    Returns: accuracy score between 0 and 1
+    """
+    if len(y_true) != len(y_pred):
+        raise ValueError("Arrays must have the same length")
+    
+    correct = sum(1 for true, pred in zip(y_true, y_pred) if true == pred)
+    return correct / len(y_true)
+
+
+def ft_precision_recall_fscore_support(y_true, y_pred, labels=None):
+    """
+    This function exists in sklearn.
+    Calculate precision, recall, f1-score and support for each class.
+    
+    y_true: array of true labels
+    y_pred: array of predicted labels
+    labels: list of labels to include in the computation
+    
+    Returns: tuple (precision, recall, f1_score, support)
+    Each element is a list with values for each class
+    """
+    if len(y_true) != len(y_pred):
+        raise ValueError("Arrays must have the same length")
+    
+    if labels is None:
+        labels = sorted(list(set(y_true) | set(y_pred)))
+    
+    # Initialize metrics
+    precision = []
+    recall = []
+    f1_score = []
+    support = []
+    
+    for label in labels:
+        # True positives (TP): predicted label correctly
+        tp = sum(1 for true, pred in zip(y_true, y_pred) 
+                if true == label and pred == label)
+        
+        # False positives (FP): predicted label incorrectly
+        fp = sum(1 for true, pred in zip(y_true, y_pred) 
+                if true != label and pred == label)
+        
+        # False negatives (FN): failed to predict label
+        fn = sum(1 for true, pred in zip(y_true, y_pred) 
+                if true == label and pred != label)
+        
+        # Support: number of occurrences of label in true labels
+        label_support = sum(1 for true in y_true if true == label)
+        
+        # Calculate metrics
+        # Handle division by zero
+        label_precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+        label_recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        
+        # Calculate F1 score
+        if label_precision + label_recall > 0:
+            label_f1 = 2 * (label_precision * label_recall) / (label_precision + label_recall)
+        else:
+            label_f1 = 0
+        
+        # Append metrics for this label
+        precision.append(label_precision)
+        recall.append(label_recall)
+        f1_score.append(label_f1)
+        support.append(label_support)
+    
+    return precision, recall, f1_score, support

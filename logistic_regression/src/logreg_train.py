@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
+import json
 from stats_functions import (
     sigmoid, 
     binary_cross_entropy, 
@@ -57,15 +58,19 @@ def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(current_dir)
     dataset_path = os.path.join(parent_dir, 'datasets', 'dataset_normalized.csv')
-    weights_path = os.path.join(current_dir, 'model_weights.npy')
     
+    # Crear directorio output si no existe
+    output_dir = os.path.join(parent_dir, 'output')
+    os.makedirs(output_dir, exist_ok=True)
+    weights_path = os.path.join(output_dir, 'model_weights.json')
+
     # Cargar y preparar datos
     print("Loading data...")
     data = pd.read_csv(dataset_path)
     
     # Separar características y etiquetas
-    # Excluimos 'Best Hand' y las columnas de casas
-    feature_columns = ['Arithmancy', 'Herbology', 'Defense Against the Dark Arts', 
+    # Excluimos las columnas de casas
+    feature_columns = ['Best Hand', 'Arithmancy', 'Herbology', 'Defense Against the Dark Arts', 
                       'Divination', 'Muggle Studies', 'Ancient Runes', 
                       'History of Magic', 'Transfiguration', 'Potions', 
                       'Care of Magical Creatures', 'Charms', 'Flying', 'Age']
@@ -87,9 +92,15 @@ def main():
     
     weights = trainer.train(X, houses)
     
-    # Guardar pesos
+    # Convertir los pesos a un formato serializable
+    weights_dict = {
+        house: weights[house].tolist() for house in weights
+    }
+    
+    # Guardar pesos en formato JSON
     print("Saving weights...")
-    np.save(weights_path, weights)
+    with open(weights_path, 'w') as f:
+        json.dump(weights_dict, f, indent=4)
     print(f"Weights saved to {weights_path}")
 
 if __name__ == "__main__":
