@@ -103,8 +103,8 @@ def binary_cross_entropy(y_true, y_pred):
     y_pred: predicted probabilities
     Returns: average binary cross entropy loss
     """
-    epsilon = 1e-15
-    y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
+    epsilon = 1e-15                                 # Small constant to avoid log(0)
+    y_pred = np.clip(y_pred, epsilon, 1 - epsilon)  # Clip values for numerical stability
     return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
 
 
@@ -159,7 +159,7 @@ def predict_one_vs_all(X, weights_dict):
 
 def ft_accuracy_score(y_true, y_pred):
     """
-    This function exists in sklearn.
+    This function accuracy_score exists in sklearn.
     Calculate accuracy score.
     y_true: array of true labels
     y_pred: array of predicted labels
@@ -174,7 +174,7 @@ def ft_accuracy_score(y_true, y_pred):
 
 def ft_precision_recall_fscore_support(y_true, y_pred, labels=None):
     """
-    This function exists in sklearn.
+    This function precision_recall_fscore_support exists in sklearn.
     Calculate precision, recall, f1-score and support for each class.
     
     y_true: array of true labels

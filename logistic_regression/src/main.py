@@ -19,19 +19,19 @@ def pause():
 
 def show_menu():
     text_menu = f"""
-    {c.PURPLE}===========   M E N U   ===========
-    {c.CYAN} 1.{c.BLUE} Initial data analysis
-    {c.CYAN} 2.{c.BLUE} Detect highly correlated columns
-    {c.CYAN} 3.{c.BLUE} Preprocessing data
-    {c.CYAN} 4.{c.BLUE} Describe dataset (max, min, ...)
-    {c.CYAN} 5.{c.BLUE} Histogram
-    {c.CYAN} 6.{c.BLUE} Scatter Plot
-    {c.CYAN} 7.{c.BLUE} Pair Plot
-    {c.CYAN} 8.{c.BLUE} Normalize dataset
-    {c.CYAN} 9.{c.BLUE} Train
-    {c.CYAN}10.{c.BLUE} Predict
-    {c.CYAN} 0. Exit
-    {c.PURPLE}{'='*36}{c.RESET}
+    {c.PURPLE}=========================    M E N U    =========================
+    {c.CYAN}  1.{c.BLUE} Initial data analysis                 [initial_analysis.py]
+    {c.CYAN}  2.{c.BLUE} Detect highly correlated columns      [correlations.py]
+    {c.CYAN}  3.{c.BLUE} Preprocessing data                    [preprocessing.py]
+    {c.CYAN}  4.{c.BLUE} Describe dataset (max, min, ...)      [describe.py]
+    {c.CYAN}  5.{c.BLUE} Histogram                             [histogram.py]
+    {c.CYAN}  6.{c.BLUE} Scatter Plot                          [scatter_plot.py]
+    {c.CYAN}  7.{c.BLUE} Pair Plot                             [pair_plot.py]
+    {c.CYAN}  8.{c.BLUE} Normalize dataset                     [normalize.py]
+    {c.CYAN}  9.{c.BLUE} Train                                 [logreg_train.py]
+    {c.CYAN} 10.{c.BLUE} Predict                               [logreg_predict.py]
+    {c.CYAN}  0. Exit
+    {c.PURPLE}{'='*65}{c.RESET}
     """
     print(text_menu)
 
