@@ -8,7 +8,8 @@ import normalize
 import histogram
 import scatter_plot
 import pair_plot
-import split_dataset
+import logreg_train
+import logreg_predict
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -27,8 +28,8 @@ def show_menu():
     {c.CYAN} 6.{c.BLUE} Scatter Plot
     {c.CYAN} 7.{c.BLUE} Pair Plot
     {c.CYAN} 8.{c.BLUE} Normalize dataset
-    {c.CYAN} 9.{c.BLUE} Split dataset
-    {c.CYAN}10.{c.BLUE} Option 10
+    {c.CYAN} 9.{c.BLUE} Train
+    {c.CYAN}10.{c.BLUE} Predict
     {c.CYAN} 0. Exit
     {c.PURPLE}{'='*36}{c.RESET}
     """
@@ -64,8 +65,11 @@ def execute_option(choice):
         print(f"{c.CYAN}=== Normalizing Dataset ==={c.RESET}\n")
         normalize.normalize_data()
     elif choice == 9:
-        print(f"{c.CYAN}=== Spliting the Dataset ==={c.RESET}\n")
-        split_dataset.split_dataset()
+        print(f"{c.CYAN}=== Model training ==={c.RESET}\n")
+        logreg_train.main()
+    elif choice == 10:
+        print(f"{c.CYAN}=== Predict the Model ==={c.RESET}\n")
+        logreg_predict.main()
     else:
         print(f"{c.RED}Invalid Option{c.RESET}")
     

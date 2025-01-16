@@ -135,9 +135,9 @@ Index,Hogwarts House
 
 Es posible hacer muchos bonos interesantes para este tema. Aquí hay algunas sugerencias:
 
-• Agregar más campos para `describe.[extension]`
-• Implementar un *descenso de gradiente estocástico*
-• Implementar otros algoritmos de optimización (GD por lotes/GD mini-lotes/como lo llames)
+   1. Agregar más campos para `describe.[extension]`
+   2. Implementar un *descenso de gradiente estocástico*
+   3. Implementar otros algoritmos de optimización (GD por lotes/GD mini-lotes/como lo llames)
 
 > La parte de bonificación solo se evaluará si la parte obligatoria es PERFECTA. Perfecto significa que la parte obligatoria se ha realizado íntegramente y funciona sin fallos. Si no has pasado TODOS los requisitos obligatorios, tu parte de bonificación no se evaluará en absoluto.
 
