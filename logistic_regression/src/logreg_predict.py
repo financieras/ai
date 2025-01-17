@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import json
 import os
-from stats_functions import (
+from aux.ft_functions import (
     sigmoid, 
     predict_one_vs_all, 
     ft_accuracy_score, 

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 import json
-from stats_functions import (
+from aux.ft_functions import (
     sigmoid, 
     binary_cross_entropy, 
     prepare_one_vs_all, 

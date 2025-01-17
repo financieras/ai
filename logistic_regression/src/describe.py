@@ -1,6 +1,6 @@
 import pandas as pd
 from tabulate import tabulate
-from stats_functions import (
+from aux.ft_functions import (
     ft_count, ft_mean, ft_std, ft_min, ft_max,
     ft_percentile, ft_median, ft_iqr,
     ft_skewness, ft_kurtosis, ft_cv
