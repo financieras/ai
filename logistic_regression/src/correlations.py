@@ -2,41 +2,35 @@ import aux.colors as c
 import pandas as pd
 import seaborn as sns
 import matplotlib
-matplotlib.use('TkAgg')  # Set the backend to TkAgg for interactive plotting
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import numpy as np
 from tabulate import tabulate
+import json
 
-def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv"):
+def detect_highly_correlated_columns(input_file="../datasets/correlation_train.csv"):
     """
     Detect and visualize highly correlated columns in a dataset.
-
-    This function loads a CSV file, calculates correlations between numeric columns,
-    creates a heatmap, and identifies highly correlated pairs of columns.
-
+    
     Args:
-    input_file (str): Path to the input CSV file. Default is "../datasets/dataset_train.csv".
-
+    input_file (str): Path to the input CSV file.
+    
     Returns:
-    None. Outputs are saved as files and printed to console.
+    str: Name of the column to be dropped if perfect correlation is found, None otherwise.
     """
-    CORRELATION_THRESHOLD = 0.6   # Cut-off Correlation
+    CORRELATION_THRESHOLD = 0.6
     output_image_file = '../output/correlation_heatmap.png'
-    output_csv_file = '../output/high_correlations.csv'
 
     # Load the dataset
     df = pd.read_csv(input_file, index_col=0)
 
-    ### Search very high correlations ###
     print(f"\n{c.BLUE}Search very high correlations{c.RESET}\n")
 
-    # Select numeric columns (float64)
+    # Select numeric columns
     numeric_columns = df.select_dtypes(include=['float64']).columns
-
-    # Calculate the correlation matrix
     correlation_matrix = df[numeric_columns].corr()
 
-    # Create a heatmap of correlations and save it
+    # Create and save heatmap
     plt.figure(figsize=(12, 10))
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, center=0)
     plt.title('Correlation Heatmap')
@@ -44,16 +38,16 @@ def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv")
     plt.savefig(output_image_file)
     plt.close()
 
-    # Find high correlations (in absolute value)
+    # Find high correlations
     high_correlations = []
     for i in range(len(correlation_matrix.columns)):
-        for j in range(i):  # exclude autocorrelations
-            if abs(correlation_matrix.iloc[i, j]) > CORRELATION_THRESHOLD:  # threshold
+        for j in range(i):
+            if abs(correlation_matrix.iloc[i, j]) > CORRELATION_THRESHOLD:
                 high_correlations.append((correlation_matrix.index[i], 
-                                        correlation_matrix.columns[j], 
-                                        correlation_matrix.iloc[i, j]))
+                                       correlation_matrix.columns[j], 
+                                       correlation_matrix.iloc[i, j]))
 
-    # Sort high correlations by absolute value
+    # Sort by absolute correlation value
     high_correlations.sort(key=lambda x: abs(x[2]), reverse=True)
 
     # Print high correlations
@@ -63,18 +57,10 @@ def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv")
         table_data.append([var1, var2, round(corr, 2)])
     print(tabulate(table_data, tablefmt="fancy_grid"))
 
-    # Save high correlations to a CSV file
-    correlations_df = pd.DataFrame(high_correlations, columns=['Variable 1', 'Variable 2', 'Correlation'])
-    correlations_df.to_csv(output_csv_file, index=False)
-
-    # Heatmap image and high correlations inform have been saved in the 'output' folder
-    print(f"\nHeatmap image and high correlations inform have been saved in the 'output' folder.")
-    
-    # Ask user if they want to see the heatmap
+    # Ask to show heatmap
     while True:
         response = input(f"\n{c.CYAN}Would you like to see the correlation image? (y/n): {c.RESET}").lower().strip()
         if response in ['y', 'yes']:
-            # Show heatmap image using matplotlib
             img = plt.imread(output_image_file)
             plt.figure(figsize=(12, 10))
             plt.imshow(img)
@@ -89,53 +75,40 @@ def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv")
 
     input(f"\n{c.YELLOW}Press ENTER to continue...{c.RESET}")
 
-
-    # Drop the feature with a perfect correlation
-
-    if round(abs(high_correlations[0][2]), 10) == 1:
-        print(f"\n{c.BLUE}Drop the feature with a perfect correlation{c.RESET}\n")
-        print("There is a perfect correlation between two features.")
-        print("To properly train the neural network, we will remove one of them.")
-        print("The one that leaves the highest number of complete records will remain.")
+    # Handle perfect correlations
+    column_to_drop = None
+    if high_correlations and round(abs(high_correlations[0][2]), 10) == 1:
+        print(f"\n{c.BLUE}Analyzing perfect correlation{c.RESET}\n")
         feature1 = high_correlations[0][0]
         feature2 = high_correlations[0][1]
-        # Which column to delete?
-        print(f"\n{c.BLUE}Which feature should I drop to avoid multicollinearity?{c.RESET}\n")
-        print(f"\t{c.GREEN}1. {feature1} or\n")
-        print(f"\t2. {feature2}{c.RESET}\n")
-
-        # Function to count complete records when deleting a column
-        def count_complete_records(df, column_to_drop):
-            df_temp = df.drop(columns=[column_to_drop])
-            return df_temp.dropna().shape[0]
-
-        # Count full records when removing Feature1
-        records_without_feature1 = count_complete_records(df,feature1)
-        print(f"Complete records after removing {feature1}: {records_without_feature1}")
-
-        # Count full records when removing Feature2
-        records_without_feature2 = count_complete_records(df, feature2)
-        print(f"Complete records after removing {feature2}: {records_without_feature2}")
-
-        # Determine which feature to remove
-        if records_without_feature1 >= records_without_feature2:
-            feature_to_drop = feature1
-            records_kept = records_without_feature1
-        else:
-            feature_to_drop = feature2
-            records_kept = records_without_feature2
-
-        print(f"It is recommended to {c.GREEN}remove {feature_to_drop}{c.RESET} to maintain {records_kept} complete records.")
         
-        # Eliminar la característica especificada
-        df_clean = df.drop(columns=[feature_to_drop])
-        print(f"\nCaracterística eliminada: {feature_to_drop}")
-        print(f"Número de columnas restantes: {df_clean.shape[1]}")
-
-        # Guardar el DataFrame limpio
-        output_file = '../datasets/dataset_cleaned.csv'
-        df_clean.to_csv(output_file)
-        print(f"\nDataset limpio guardado en: {output_file}")
+        # Get all columns except the perfectly correlated ones
+        all_columns = list(df.columns)
+        rest_columns = [col for col in all_columns if col not in [feature1, feature2]]
+        
+        # Create masks for each feature
+        mask_feature1 = df[feature1].isna() & df[rest_columns].notna().all(axis=1)
+        mask_feature2 = df[feature2].isna() & df[rest_columns].notna().all(axis=1)
+        
+        data1 = mask_feature1.sum()
+        data2 = mask_feature2.sum()
+        
+        # Determine which feature to drop
+        if data1 > data2:
+            column_to_drop = feature1
+            print(f"Propose to remove '{feature1}' as we gain {data1 - data2} complete records")
+        else:
+            column_to_drop = feature2
+            print(f"Propose to remove '{feature2}' as we gain {data2 - data1} complete records")
+            
+        # Save the column to drop in the output directory
+        config = {'column_to_drop': column_to_drop}
+        with open('../output/preprocessing_config.json', 'w') as f:
+            json.dump(config, f)
+            
+        print(f"\nColumn to be dropped has been saved to the output directory")
+    
+    return column_to_drop
 
 if __name__ == "__main__":
     detect_highly_correlated_columns()

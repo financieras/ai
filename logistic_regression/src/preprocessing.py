@@ -1,23 +1,41 @@
 import pandas as pd
+import json
+import os
 
-def preprocess_data(input_file='../datasets/dataset_cleaned.csv', output_file='../datasets/dataset_preprocessed.csv'):
+def preprocess_data(input_file='../datasets/correlation_train.csv'):
     """
     Preprocess the input dataset and save the result to a new CSV file.
 
     Parameters:
     input_file (str): Path to the input CSV file.
-    output_file (str): Path to save the preprocessed CSV file.
     
     The preprocessing steps include:
+    - Reading column to drop from preprocessing_config.json if exists
+    - Dropping specified column from correlation analysis
     - Dropping rows with missing data
     - Removing duplicate rows
     - Converting 'Birthday' to datetime format
     - Converting 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
-    - Resetting the index and dropping the original 'Index' column if present.
+    - Resetting the index
     """
+    # Determine output file name based on input file
+    if 'test' in input_file.lower():
+        output_file = '../datasets/dataset_preprocessed_test.csv'
+    else:
+        output_file = '../datasets/dataset_preprocessed.csv'
 
     # Read the CSV file into a DataFrame
     df = pd.read_csv(input_file)
+
+    # Check if there's a column to drop from correlation analysis
+    config_file = '../output/preprocessing_config.json'
+    if os.path.exists(config_file):
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+            column_to_drop = config.get('column_to_drop')
+            if column_to_drop and column_to_drop in df.columns:
+                print(f"Dropping column '{column_to_drop}' based on correlation analysis")
+                df = df.drop(columns=[column_to_drop])
 
     # Drop rows with missing data
     df = df.dropna()
@@ -41,17 +59,16 @@ def preprocess_data(input_file='../datasets/dataset_cleaned.csv', output_file='.
     # Save the preprocessed DataFrame to a new CSV file
     df.to_csv(output_file, index=False)
 
-    print(f'''The preprocessing steps include:\n
+    print(f'''Preprocessing steps completed:
     \t- Read the file {input_file}
-    \t- Dropping rows with missing data
-    \t- Removing duplicate rows
-    \t- Converting 'Birthday' to datetime format
-    \t- Converting 'Best Hand' to a binary variable (0 for Left, 1 for Right)
-    \t- Resetting the index and dropping the original 'Index' column if present.
-    \t- Save the preprocessed DataFrame to a new CSV file.
-        ''')
-    print(f"Preprocessing completed. Output saved to: {output_file}")
-
+    \t- Checked for correlation-based column removal
+    \t- Dropped rows with missing data
+    \t- Removed duplicate rows
+    \t- Converted 'Birthday' to datetime format
+    \t- Converted 'Best Hand' to a binary variable (0 for Left, 1 for Right)
+    \t- Reset the index and dropped the original 'Index' column if present
+    \t- Saved the preprocessed DataFrame to: {output_file}
+    ''')
 
 if __name__ == "__main__":
     preprocess_data()
