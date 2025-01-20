@@ -68,7 +68,7 @@ def detect_highly_correlated_columns(input_file="../datasets/correlation_train.c
             plt.show()
             break
         elif response in ['n', 'no']:
-            print("\nThe graph will not be displayed. You can find it at:", output_image_file)
+            print(f"\nThe graph will not be displayed. You can find it at:\n\t{output_image_file}")
             break
         else:
             print("Please answer 'y' or 'n'")
@@ -96,17 +96,18 @@ def detect_highly_correlated_columns(input_file="../datasets/correlation_train.c
         # Determine which feature to drop
         if data1 > data2:
             column_to_drop = feature1
-            print(f"Propose to remove '{feature1}' as we gain {data1 - data2} complete records")
+            print(f"Propose to remove '{feature1}' as we gain {data1 - data2} complete records.")
         else:
             column_to_drop = feature2
-            print(f"Propose to remove '{feature2}' as we gain {data2 - data1} complete records")
+            print(f"Propose to remove '{feature2}' as we gain {data2 - data1} complete records.")
             
         # Save the column to drop in the output directory
+        config_file = '../output/preprocessing_config.json'
         config = {'column_to_drop': column_to_drop}
-        with open('../output/preprocessing_config.json', 'w') as f:
+        with open(config_file, 'w') as f:
             json.dump(config, f)
             
-        print(f"\nColumn to be dropped has been saved to the output directory")
+        print(f"\nColumn to be dropped has been saved in the file:\n\t{config_file}")
     
     return column_to_drop
 
