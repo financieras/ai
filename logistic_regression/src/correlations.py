@@ -8,7 +8,7 @@ import numpy as np
 from tabulate import tabulate
 import json
 
-def detect_highly_correlated_columns(input_file="../datasets/correlation_train.csv"):
+def detect_highly_correlated_columns(input_file="../datasets/dataset_train.csv"):
     """
     Detect and visualize highly correlated columns in a dataset.
     
@@ -25,7 +25,7 @@ def detect_highly_correlated_columns(input_file="../datasets/correlation_train.c
     df = pd.read_csv(input_file, index_col=0)
 
     print(f"\n{c.BLUE}Search very high correlations{c.RESET}\n")
-
+    
     # Select numeric columns
     numeric_columns = df.select_dtypes(include=['float64']).columns
     correlation_matrix = df[numeric_columns].corr()

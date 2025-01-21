@@ -2,7 +2,7 @@ import pandas as pd
 import json
 import os
 
-def preprocess_data(input_file='../datasets/correlation_train.csv'):
+def preprocess_data(input_file='../datasets/dataset_train.csv'):
     """
     Preprocess the input dataset and save the result to a new CSV file.
 
@@ -18,11 +18,8 @@ def preprocess_data(input_file='../datasets/correlation_train.csv'):
     - Converting 'Best_Hand' to a binary variable (0 for Left, 1 for Right)
     - Resetting the index
     """
-    # Determine output file name based on input file
-    if 'test' in input_file.lower():
-        output_file = '../datasets/dataset_preprocessed_test.csv'
-    else:
-        output_file = '../datasets/dataset_preprocessed.csv'
+    # Output file name
+    output_file = '../datasets/dataset_preprocessed.csv'
 
     # Read the CSV file into a DataFrame
     df = pd.read_csv(input_file)

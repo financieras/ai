@@ -24,7 +24,7 @@ def generate_histogram():
     """
 
     # Read the dataset
-    df = pd.read_csv('../datasets/dataset_preprocessed.csv')
+    df = pd.read_csv('../datasets/dataset_preprocessed')
     
     # Get list of course columns (excluding non-course columns)
     courses = df.select_dtypes(include=['float64']).columns
