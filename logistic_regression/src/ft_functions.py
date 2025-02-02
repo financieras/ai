@@ -85,148 +85,179 @@ def ft_cv(data):
 
 ###### FUNCTIONS FOR LOGISTIC REGRESSION ######
 
-def sigmoid(z):
+def softmax(z):
     """
-    Compute the sigmoid function.
-    z: array of inputs
-    Returns: sigmoid activation for each input
-    """
-    # Clip values to avoid overflow
-    z = np.clip(z, -500, 500)
-    return 1 / (1 + np.exp(-z))
+    Calcula la función softmax para clasificación multinomial
 
+    Parámetros:
+    z: matriz de forma (n_muestras, n_clases)
 
-def binary_cross_entropy(y_true, y_pred):
+    Retorna:
+    matriz de probabilidades de forma (n_muestras, n_clases)
+    donde cada fila suma 1
     """
-    Compute binary cross entropy loss.
-    y_true: true labels (0 or 1)
-    y_pred: predicted probabilities
-    Returns: average binary cross entropy loss
-    """
-    epsilon = 1e-15                                 # Small constant to avoid log(0)
-    y_pred = np.clip(y_pred, epsilon, 1 - epsilon)  # Clip values for numerical stability
-    return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
+    # Restamos el máximo para estabilidad numérica
+    # Esto evita desbordamiento en exp() con números grandes
+    z_shifted = z - np.max(z, axis=1, keepdims=True)
 
+    # Calculamos exp() de los valores desplazados
+    exp_scores = np.exp(z_shifted)
 
-def prepare_one_vs_all(y, positive_class):
-    """
-    Convert multiclass labels to binary labels for one-vs-all classification.
-    y: original multiclass labels
-    positive_class: the class to treat as positive (1)
-    Returns: binary labels (1 for positive_class, 0 for all others)
-    """
-    return (y == positive_class).astype(int)
+    # Normalizamos dividiendo por la suma
+    return exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
 
+def compute_cost(X, y, W):
+    """
+    Calcula la función de pérdida logarítmica (cross-entropy) para clasificación multinomial
 
-def binary_gradient(X, y_true, y_pred):
-    """
-    Compute gradient for binary logistic regression.
-    X: feature matrix
-    y_true: true binary labels
-    y_pred: predicted probabilities
-    Returns: gradient for weight update
-    """
-    error = y_pred - y_true
-    return np.dot(X.T, error) / X.shape[0]
+    Parámetros:
+    X: matriz de características (incluyendo columna de 1's) de forma (n_muestras, n_características)
+    y: matriz one-hot de etiquetas reales de forma (n_muestras, n_clases)
+    W: matriz de pesos de forma (n_características, n_clases)
 
+    Retorna:
+    J: valor de la función de pérdida
+    """
+    m = X.shape[0]  # número de muestras
 
-def predict_one_vs_all(X, weights_dict):
-    """
-    Make predictions using trained one-vs-all models.
-    X: feature matrix
-    weights_dict: dictionary of weights for each class
-    Returns: predicted class labels
-    """
-    predictions = {}
-    classes = list(weights_dict.keys())
-    
-    # Calcular probabilidades para cada clase
-    for class_name, weights in weights_dict.items():
-        predictions[class_name] = sigmoid(np.dot(X, weights))
-    
-    # Convertir predicciones a array
-    pred_array = np.column_stack([predictions[class_name] for class_name in classes])
-    
-    # Obtener los índices de las probabilidades máximas
-    max_indices = np.argmax(pred_array, axis=1)
-    
-    # Convertir índices a nombres de clases
-    return [classes[idx] for idx in max_indices]
+    # Calcular predicciones
+    z = np.dot(X, W)  # (n_muestras, n_clases)
+    h = softmax(z)    # (n_muestras, n_clases)
+
+    # Calcular pérdida logarítmica
+    epsilon = 1e-15  # para evitar log(0)
+
+    # Multiplicación elemento a elemento de y real con log de predicciones
+    # y sumamos sobre todas las clases (axis=1) y todas las muestras
+    J = -(1/m) * np.sum(y * np.log(h + epsilon))
+
+    return J
 
 
 
-###### FUNCTIONS TO MEASURE THE QUALITY OF THE FIT ######
+def gradient_descent_multinomial(X, y, learning_rate=0.1, num_iterations=1000, epsilon=1e-8):
+    """
+    Implementa el descenso del gradiente para regresión logística multinomial
 
-def ft_accuracy_score(y_true, y_pred):
+    Parámetros:
+    X: matriz de características (incluyendo columna de 1's) de forma (n_muestras, n_características)
+    y: matriz one-hot de etiquetas reales de forma (n_muestras, n_clases)
+    learning_rate: tasa de aprendizaje (alpha)
+    num_iterations: número máximo de iteraciones
+    epsilon: umbral para early stopping
+
+    Retorna:
+    W: matriz de pesos optimizada
+    cost_history: lista con el valor de la función de pérdida en cada iteración
     """
-    This function accuracy_score exists in sklearn.
-    Calculate accuracy score.
-    y_true: array of true labels
-    y_pred: array of predicted labels
-    Returns: accuracy score between 0 and 1
-    """
-    if len(y_true) != len(y_pred):
-        raise ValueError("Arrays must have the same length")
-    
-    correct = sum(1 for true, pred in zip(y_true, y_pred) if true == pred)
-    return correct / len(y_true)
+    # Inicializar matriz de pesos W con valores pequeños aleatorios
+    n_features = X.shape[1]
+    n_classes = y.shape[1]
+    W = np.random.randn(n_features, n_classes) * 0.01
+
+    # Lista para guardar el historial de costes
+    cost_history = []
+
+    # Número de muestras
+    m = X.shape[0]
+
+    # Calcular coste inicial
+    prev_cost = compute_cost(X, y, W)
+    cost_history.append(prev_cost)
+
+    # Descenso del gradiente
+    for i in range(num_iterations):
+        # Calcular predicciones actuales
+        z = np.dot(X, W)
+        h = softmax(z)
+
+        # Calcular gradiente
+        # El gradiente es (1/m) * X^T * (h - y)
+        gradient = (1/m) * np.dot(X.T, (h - y))
+
+        # Actualizar pesos
+        W = W - learning_rate * gradient
+
+        # Calcular nuevo coste
+        current_cost = compute_cost(X, y, W)
+        cost_history.append(current_cost)
+
+        # Imprimir progreso cada 1000 iteraciones
+        if i % 1000 == 0:
+            print(f'Iteración {i}: Coste = {current_cost}')
+
+        # Early stopping
+        if abs(prev_cost - current_cost) < epsilon:
+            print(f'\nConvergencia alcanzada en la iteración {i}')
+            print(f'Diferencia en coste: {abs(prev_cost - current_cost)}')
+            break
+
+        prev_cost = current_cost
+
+    return W, cost_history
 
 
-def ft_precision_recall_fscore_support(y_true, y_pred, labels=None):
+def predict(X, W):
     """
-    This function precision_recall_fscore_support exists in sklearn.
-    Calculate precision, recall, f1-score and support for each class.
-    
-    y_true: array of true labels
-    y_pred: array of predicted labels
-    labels: list of labels to include in the computation
-    
-    Returns: tuple (precision, recall, f1_score, support)
-    Each element is a list with values for each class
+    Realiza predicciones usando los pesos aprendidos
+
+    Parámetros:
+    X: matriz de características (incluyendo columna de 1's)
+    W: matriz de pesos optimizada
+
+    Retorna:
+    predicciones: matriz de probabilidades para cada clase
     """
-    if len(y_true) != len(y_pred):
-        raise ValueError("Arrays must have the same length")
-    
-    if labels is None:
-        labels = sorted(list(set(y_true) | set(y_pred)))
-    
-    # Initialize metrics
-    precision = []
-    recall = []
-    f1_score = []
-    support = []
-    
-    for label in labels:
-        # True positives (TP): predicted label correctly
-        tp = sum(1 for true, pred in zip(y_true, y_pred) 
-                if true == label and pred == label)
-        
-        # False positives (FP): predicted label incorrectly
-        fp = sum(1 for true, pred in zip(y_true, y_pred) 
-                if true != label and pred == label)
-        
-        # False negatives (FN): failed to predict label
-        fn = sum(1 for true, pred in zip(y_true, y_pred) 
-                if true == label and pred != label)
-        
-        # Support: number of occurrences of label in true labels
-        label_support = sum(1 for true in y_true if true == label)
-        
-        # Calculate metrics
-        # Handle division by zero
-        label_precision = tp / (tp + fp) if (tp + fp) > 0 else 0
-        label_recall = tp / (tp + fn) if (tp + fn) > 0 else 0
-        
-        # Calculate F1 score
-        if label_precision + label_recall > 0:
-            label_f1 = 2 * (label_precision * label_recall) / (label_precision + label_recall)
-        else:
-            label_f1 = 0
-        
-        # Append metrics for this label
-        precision.append(label_precision)
-        recall.append(label_recall)
-        f1_score.append(label_f1)
-        support.append(label_support)
-    
-    return precision, recall, f1_score, support
+    z = np.dot(X, W)
+    return softmax(z)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
