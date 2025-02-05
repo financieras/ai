@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import pandas as pd
 
 ###### FUNCTIONS FOR DESCRIPTIVE STATISTICS ######
 
@@ -88,6 +89,7 @@ def ft_cv(data):
 def softmax(z):
     """
     Calcula la función softmax para clasificación multinomial
+    El cálculo se realiza para cada fila de la matriz de entrada
 
     Parámetros:
     z: matriz de forma (n_muestras, n_clases)
@@ -96,7 +98,7 @@ def softmax(z):
     matriz de probabilidades de forma (n_muestras, n_clases)
     donde cada fila suma 1
     """
-    # Restamos el máximo para estabilidad numérica
+    # Restar el máximo de cada fila para estabilidad numérica
     # Esto evita desbordamiento en exp() con números grandes
     z_shifted = z - np.max(z, axis=1, keepdims=True)
 
@@ -105,6 +107,7 @@ def softmax(z):
 
     # Normalizamos dividiendo por la suma
     return exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
+
 
 def compute_cost(X, y, W):
     """
@@ -197,14 +200,15 @@ def gradient_descent_multinomial(X, y, learning_rate=0.1, num_iterations=1000, e
     return W, cost_history
 
 
+
+###### FUNCTIONS FOR PREDICT ######
+
 def predict(X, W):
     """
     Realiza predicciones usando los pesos aprendidos
-
     Parámetros:
     X: matriz de características (incluyendo columna de 1's)
     W: matriz de pesos optimizada
-
     Retorna:
     predicciones: matriz de probabilidades para cada clase
     """
@@ -212,52 +216,52 @@ def predict(X, W):
     return softmax(z)
 
 
+def prepare_test_data(df_test):
+    """
+    Prepara los datos de test para las predicciones
+    """
+    X_test = df_test[['Best Hand', 'Age', 'Herbology', 'Defense Against the Dark Arts',
+                      'Potions', 'Charms', 'Flying']]
+    X_test = np.c_[np.ones(len(X_test)), X_test]
+    return np.array(X_test)
 
+def make_house_predictions(X_test, W_optimal):
+    """
+    Realiza las predicciones y devuelve tanto las casas predichas como las probabilidades
+    """
+    # Hacer predicciones usando los pesos óptimos
+    probabilities = predict(X_test, W_optimal)
+    predicted_houses = np.argmax(probabilities, axis=1)
+    
+    # Convertir índices a nombres de casas
+    house_names = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
+    predictions = [house_names[idx] for idx in predicted_houses]
+    
+    return predictions, probabilities
 
+def save_predictions(predictions, output_file):
+    """
+    Guarda las predicciones en un archivo CSV
+    """
+    predictions_df = pd.DataFrame({
+        'Index': range(len(predictions)),
+        'Hogwarts House': predictions
+    })
+    predictions_df.to_csv(output_file, index=False)
+    return predictions_df
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def compare_predictions(file_paths):
+    """
+    Compara las predicciones de diferentes archivos CSV
+    """
+    dfs = [pd.read_csv(file) for file in file_paths]
+    
+    if dfs[0].equals(dfs[1]) and dfs[1].equals(dfs[2]):
+        print("\n✅ Los tres archivos CSV son idénticos.")
+    else:
+        print("\n❌ Los archivos tienen diferencias.")
+        for i in range(1, len(dfs)):
+            diffs = dfs[0].compare(dfs[i])
+            if not diffs.empty:
+                print(f"\n🔍 Diferencias entre {file_paths[0]} y {file_paths[i]}:")
+                print(diffs)
