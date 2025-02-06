@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import pandas as pd
+import json
 
 ###### FUNCTIONS FOR DESCRIPTIVE STATISTICS ######
 
@@ -138,69 +139,6 @@ def compute_cost(X, y, W):
 
 
 
-def gradient_descent_multinomial(X, y, learning_rate=0.1, num_iterations=1000, epsilon=1e-8):
-    """
-    Implementa el descenso del gradiente para regresión logística multinomial
-
-    Parámetros:
-    X: matriz de características (incluyendo columna de 1's) de forma (n_muestras, n_características)
-    y: matriz one-hot de etiquetas reales de forma (n_muestras, n_clases)
-    learning_rate: tasa de aprendizaje (alpha)
-    num_iterations: número máximo de iteraciones
-    epsilon: umbral para early stopping
-
-    Retorna:
-    W: matriz de pesos optimizada
-    cost_history: lista con el valor de la función de pérdida en cada iteración
-    """
-    # Inicializar matriz de pesos W con valores pequeños aleatorios
-    n_features = X.shape[1]
-    n_classes = y.shape[1]
-    W = np.random.randn(n_features, n_classes) * 0.01
-
-    # Lista para guardar el historial de costes
-    cost_history = []
-
-    # Número de muestras
-    m = X.shape[0]
-
-    # Calcular coste inicial
-    prev_cost = compute_cost(X, y, W)
-    cost_history.append(prev_cost)
-
-    # Descenso del gradiente
-    for i in range(num_iterations):
-        # Calcular predicciones actuales
-        z = np.dot(X, W)
-        h = softmax(z)
-
-        # Calcular gradiente
-        # El gradiente es (1/m) * X^T * (h - y)
-        gradient = (1/m) * np.dot(X.T, (h - y))
-
-        # Actualizar pesos
-        W = W - learning_rate * gradient
-
-        # Calcular nuevo coste
-        current_cost = compute_cost(X, y, W)
-        cost_history.append(current_cost)
-
-        # Imprimir progreso cada 1000 iteraciones
-        if i % 1000 == 0:
-            print(f'Iteración {i}: Coste = {current_cost}')
-
-        # Early stopping
-        if abs(prev_cost - current_cost) < epsilon:
-            print(f'\nConvergencia alcanzada en la iteración {i}')
-            print(f'Diferencia en coste: {abs(prev_cost - current_cost)}')
-            break
-
-        prev_cost = current_cost
-
-    return W, cost_history
-
-
-
 ###### FUNCTIONS FOR PREDICT ######
 
 def predict(X, W):
@@ -265,3 +203,18 @@ def compare_predictions(file_paths):
             if not diffs.empty:
                 print(f"\n🔍 Diferencias entre {file_paths[0]} y {file_paths[i]}:")
                 print(diffs)
+
+def save_weights(W, output_file='../output/model_weights.json'):
+    """
+    Guarda los pesos del modelo en formato JSON
+    
+    Parámetros:
+    W: matriz de pesos numpy del modelo
+    output_file: ruta completa del archivo donde guardar los pesos. Por defecto es '../output/model_weights.json'
+    """    
+    # Convertir matriz de pesos numpy a lista
+    weights = W.tolist()
+    
+    # Guardar en JSON
+    with open(output_file, 'w') as f:
+        json.dump(weights, f)
