@@ -1,59 +1,46 @@
-# Logistic Regression
-Bienvenido a este proyecto desarrollado en Jupyter Lab con minicnoda instalado en un Linux basado en Ubuntu.
+Clonar el repositorio 'logistic_regression'
 
-### Estoy en Linux Mint
-sudo apt update -y
-sudo apt upgrade -y
+Crear un entorno virtual, por ejemplo, uno llamado 'env':
 
-### Ver si está instalado conda en el sistema
-conda --version
+Ir a la carpeta del proyecto:
 
-### Instalación de miniconda
+```bash
+cd logistic_regression
+```
+Crear el entorno virtual con Python3:
 
-### Instalar el entorno virtual llamado 'env'
-conda create --name env
+```bash
+python3 -m venv env
+```
 
-### Ir al nuevo entorno virtual
-conda activate env
+Activar el entorno virtual:
 
-### Ver si está instalado jupyter lab
-jupyter lab --version
+```bash
+source env/bin/activate
+```
 
-### Instalación de jupyter lab
-conda install -c conda-forge jupyterlab
+Para aplicar el archivo requirements.txt en su entorno virtual activado en Ubuntu, siga estos pasos:
 
-### Verificar si se ha instalado jupyter lab y otros paquetes
-#### Se puede ver la versión de Python instalada
-conda list
+1. Asegúrese de que su entorno virtual 'env' esté activado. Debería ver (env) al inicio de su línea de comando.
 
-### Lanzar jupyter lab estando en el entorno virtual 'env'
-jupyter lab
+2. Navegue al directorio donde se encuentra su archivo requirements.txt. Generalmente, este archivo está en la raíz del proyecto. Si ya está en ese directorio, puede omitir este paso.
 
-### Ir al directorio de nuestro proyecto y hacer un git pull para actualizarlo
-#### Lanzar jupyter lab. Se abrirá en el browser que tengamos
-#### y en la terminal queda el servidor corriendo
-jupyter lab
+3. Ejecute el siguiente comando para instalar todas las dependencias listadas en el archivo requirements.txt:
 
-### Instalar pandas en 'env'. Asegurate de estar en 'env'
-conda install pandas
+```bash
+pip install -r requirements.txt
+```
 
-### Instalar la librería seaborn desde el canal conda-forge
-### este canal habitualmente tiene las librerías muy actualizadas
-conda install -c conda-forge seaborn
+Este comando le indicará a pip que instale todos los paquetes y sus versiones específicas tal como están listados en el archivo requirements.txt[1][3].
 
-### Instalar la librería tabulate
-conda install -c conda-forge tabulate
+4. Espere a que pip complete la instalación de todas las dependencias. Verá una salida en la terminal que muestra el progreso de la instalación.
 
+5. Una vez finalizada la instalación, puede verificar que los paquetes se hayan instalado correctamente usando:
 
-## Crear un archivo environment.yml para capturar las librerías y versiones usadas en el entorno virutual
-### Exportar el archivo environment.yml. Debo estar en el entorno virtual 'env'
+```bash
+pip list
+```
 
-conda env export > environment.yml
+Este comando mostrará todos los paquetes instalados en su entorno virtual.
 
-### Este comando creará un archivo environment.yml en tu directorio actual con todas las dependencias y versiones de tu entorno
-
-### Verifica el contenido del archivo generado
-cat environment.yml
-
-## Para recrear el entorno a partir de este archivo, simplemente usa:
-conda env create -f environment.yml
+Siguiendo estos pasos, habrá aplicado exitosamente el archivo requirements.txt a su entorno virtual en Ubuntu.
